@@ -1,0 +1,13 @@
+{
+  "name": "@openclinical/proformajs-vue3-core",
+  "version": "0.0.1",
+  "module": true,
+  "description": "Common vue3 SFCs for proformajs",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

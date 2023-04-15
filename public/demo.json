@@ -1,0 +1,169 @@
+{
+  "class": "Plan",
+  "meta": {
+    "svg": {
+      "width": 800,
+      "height": 400
+    },
+    "enact": {
+      "template": "development"
+    }
+  },
+  "caption": "Plan",
+  "name": "plan",
+  "autonomous": true,
+  "dataDefinitions": [
+    {
+      "class": "Text",
+      "caption": "Credit history",
+      "name": "credit_history",
+      "range": [
+        "good",
+        "bad"
+      ]
+    },
+    {
+      "class": "Integer",
+      "caption": "Loan amount",
+      "name": "loan_amount"
+    },
+    {
+      "class": "Integer",
+      "caption": "Loan term",
+      "name": "loan_term",
+      "range": [
+        12,
+        36,
+        60
+      ]
+    },
+    {
+      "class": "Integer",
+      "caption": "Applicant income",
+      "name": "applicant_income"
+    },
+    {
+      "class": "Integer",
+      "caption": "Coapplicant income",
+      "name": "coapplicant_income"
+    },
+    {
+      "class": "Integer",
+      "caption": "Total income",
+      "name": "total_income",
+      "valueCondition": "applicant_income + (is_known(\"coapplicant_income\") ? coapplicant_income : 0)"
+    }
+  ],
+  "tasks": [
+    {
+      "class": "Enquiry",
+      "meta": {
+        "pos": {
+          "x": 77.90403209183114,
+          "y": 101.75645157596247
+        }
+      },
+      "caption": "Enquire",
+      "name": "enquire",
+      "sources": [
+        {
+          "class": "Source",
+          "type": "credit_history",
+          "requestCondition": "!is_known('credit_history')"
+        },
+        {
+          "class": "Source",
+          "type": "loan_amount",
+          "requestCondition": "!is_known('loan_amount')"
+        },
+        {
+          "class": "Source",
+          "type": "loan_term",
+          "requestCondition": "!is_known('loan_term')"
+        },
+        {
+          "class": "Source",
+          "type": "applicant_income",
+          "requestCondition": "!is_known('applicant_income')"
+        },
+        {
+          "class": "Source",
+          "type": "coapplicant_income"
+        }
+      ]
+    },
+    {
+      "class": "Decision",
+      "meta": {
+        "pos": {
+          "x": 257.8572576889518,
+          "y": 101.59951617951796
+        }
+      },
+      "caption": "Decide",
+      "name": "decide",
+      "preCondition": "is_completed('enquire')",
+      "waitCondition": "is_finished('enquire')",
+      "candidates": [
+        {
+          "class": "Candidate",
+          "caption": "Grant",
+          "name": "grant",
+          "recommendCondition": "net_support('grant')>1",
+          "arguments": [
+            {
+              "class": "Argument",
+              "caption": "loan_amount<0.40*total_income*loan_term/60",
+              "support": 1,
+              "activeCondition": "loan_amount<0.40*total_income*loan_term/60"
+            },
+            {
+              "class": "Argument",
+              "caption": "credit_history==\"good\"",
+              "support": 1,
+              "activeCondition": "credit_history==\"good\""
+            },
+            {
+              "class": "Argument",
+              "caption": "credit_history==\"bad\"",
+              "support": -1,
+              "activeCondition": "credit_history==\"bad\""
+            }
+          ]
+        },
+        {
+          "class": "Candidate",
+          "caption": "Deny",
+          "name": "deny",
+          "recommendCondition": "net_support('grant')<=1"
+        }
+      ]
+    },
+    {
+      "class": "Action",
+      "meta": {
+        "pos": {
+          "x": 414.4053220253025,
+          "y": 54.278709608463274
+        }
+      },
+      "caption": "Granted",
+      "name": "granted",
+      "preCondition": "is_completed('decide') && result_of('decide')==\"grant\"",
+      "waitCondition": "is_finished('decide')"
+    },
+    {
+      "class": "Action",
+      "meta": {
+        "pos": {
+          "x": 414.40532202530244,
+          "y": 184.48016106990943
+        }
+      },
+      "caption": "Denied",
+      "name": "denied",
+      "preCondition": "is_completed('decide') && result_of('decide')==\"deny\"",
+      "waitCondition": "is_finished('decide')"
+    }
+  ]
+}
