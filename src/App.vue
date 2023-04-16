@@ -1,14 +1,16 @@
 <script>
-import { Protocol } from '@openclinical/proformajs';
+import { Protocol } from '@openclinical/proformajs'
 
 export default {
-  data: function() {
+  data: function () {
     return {
-      protocol: new Protocol.Plan({name: 'test'})
+      protocol: new Protocol.Plan({ name: 'test' })
     }
   },
-  created: function() {
-    fetch('./demo.json') .then((data) => data.json()) .then((json) => this.protocol = new Protocol.Plan(json));
+  created: function () {
+    fetch('./demo.json')
+      .then((data) => data.json())
+      .then((json) => (this.protocol = new Protocol.Plan(json)))
   }
 }
 </script>
@@ -18,4 +20,3 @@ export default {
     <pre>{{ protocol }}</pre>
   </main>
 </template>
-
