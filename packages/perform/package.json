@@ -1,0 +1,19 @@
+{
+  "name": "@openclinical/proformajs-vue3-perform",
+  "version": "0.0.1",
+  "description": "Vue3 SFCs for enacting proformajs protocols",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@openclinical/proformajs-vue3-map": "file:../map",
+    "dompurify": "^3.0.2",
+    "file-saver": "^2.0.5",
+    "marked": "^4.3.0",
+    "moment": "^2.29.4"
+  },
+  "author": "Matt South",
+  "license": "GPL-3"
+}

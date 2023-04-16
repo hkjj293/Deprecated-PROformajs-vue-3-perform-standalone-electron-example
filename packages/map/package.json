@@ -1,0 +1,16 @@
+{
+  "name": "@openclinical/proformajs-vue3-map",
+  "version": "0.0.1",
+  "module": true,
+  "description": "Shared components for perform and compose packages",
+  "main": "index.js",
+  "files": [
+    "src/*.js"
+  ],
+  "scripts": {
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix",
+    "format": "prettier --write src/"
+  },
+  "author": "Matt South",
+  "license": "GPL-3"
+}

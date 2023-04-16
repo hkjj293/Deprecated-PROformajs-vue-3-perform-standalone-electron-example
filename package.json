@@ -14,6 +14,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@openclinical/proformajs": "^0.9.0",
     "bootstrap": "^5.2.3",
     "vue": "^3.2.47"
@@ -30,5 +33,9 @@
     "sass": "^1.62.0",
     "start-server-and-test": "^2.0.0",
     "vite": "^4.1.4"
-  }
+  },
+  "workspaces": [
+    "packages/map",
+    "packages/perform"
+  ]
 }
