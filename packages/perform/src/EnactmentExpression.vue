@@ -11,6 +11,7 @@ Provides an expression evaluation box to help debugging.
 
 multiple expressions can be watched
 an expression that consists of the name of a data def without a value will be undefined
+todo: remember previously used expressions when you close and open debug panel
 </docs>
 
 <template>

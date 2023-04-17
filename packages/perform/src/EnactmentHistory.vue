@@ -141,36 +141,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.card-body {
-  padding: 1.25rem;
-}
-
-.btn {
-  overflow-anchor: none;
-  width: 100%;
-}
-
-thead {
-  text-align: start;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-  border-bottom-color: rgb(222, 226, 230);
-}
-
-th,
-td {
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: rgb(222, 226, 230);
-}
-
-.btn-link {
-  text-decoration: none;
-}
-
-.btn-link:hover {
-  text-decoration: underline;
-}
-</style>
