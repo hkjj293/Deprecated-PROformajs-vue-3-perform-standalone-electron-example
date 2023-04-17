@@ -78,7 +78,7 @@ export default {
           return discarded_color
         case 'in_progress':
           return task_colors[this.clazz].todo
-        case 'dormant':
+        default: // 'dormant' and any others
           return 'none'
       }
     },

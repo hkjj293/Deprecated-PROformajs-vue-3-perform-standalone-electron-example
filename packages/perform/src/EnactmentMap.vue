@@ -25,6 +25,7 @@ Provides an svg element that can be used to visualise an enactment as a map and:
         :offset="0"
         @select-task="updatePlan"
         :selected="selectedplan === selectedtask"
+        :review="true"
       />
       <p-map-task
         v-for="task in runtimeTasks(plan)"
@@ -110,7 +111,7 @@ export default {
           .join(':')
         plan = this.protocol.getComponent(designpath)
       } catch (e) {
-        this.selectedplan = this.protocol.name
+        console.err('dropping back to root', this.selectedplan, e)
         plan = this.protocol
       }
       return plan

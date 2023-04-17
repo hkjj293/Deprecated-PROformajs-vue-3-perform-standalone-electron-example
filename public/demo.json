@@ -9,8 +9,8 @@
       "template": "development"
     }
   },
-  "caption": "Plan",
-  "name": "plan",
+  "caption": "Loan request demo",
+  "name": "demo",
   "autonomous": true,
   "dataDefinitions": [
     {
@@ -59,8 +59,8 @@
       "class": "Enquiry",
       "meta": {
         "pos": {
-          "x": 77.90403209183114,
-          "y": 101.75645157596247
+          "x": 80.33348695217464,
+          "y": 116.33318073802349
         }
       },
       "caption": "Enquire",
@@ -96,8 +96,8 @@
       "class": "Decision",
       "meta": {
         "pos": {
-          "x": 257.8572576889518,
-          "y": 101.59951617951796
+          "x": 246.51980167401547,
+          "y": 116.17624534157898
         }
       },
       "caption": "Decide",
@@ -140,17 +140,32 @@
       ]
     },
     {
-      "class": "Action",
+      "class": "Plan",
       "meta": {
         "pos": {
-          "x": 414.4053220253025,
+          "x": 415.2151403120837,
           "y": 54.278709608463274
         }
       },
       "caption": "Granted",
       "name": "granted",
       "preCondition": "is_completed('decide') && result_of('decide')==\"grant\"",
-      "waitCondition": "is_finished('decide')"
+      "waitCondition": "is_finished('decide')",
+      "tasks": [
+        {
+          "class": "Action",
+          "meta": {
+            "pos": {
+              "x": 85.19674648095355,
+              "y": 104.32546871545753
+            }
+          },
+          "caption": "Make payment",
+          "description": "Please pay the applicant the requested amount.",
+          "name": "make_payment"
+        }
+      ],
+      "autonomous": true
     },
     {
       "class": "Action",

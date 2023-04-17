@@ -25,7 +25,7 @@ but I cant work out how to position these correctly.  See also ComposeMapTask.
   <g id="breadcrumb">
     <text :x="offset + 10" y="20">
       <tspan
-        v-for="crumb in crumbs()"
+        v-for="(crumb, idx) in crumbs"
         class="clickable"
         @click="changePath"
         :data-path="crumb.path"
@@ -33,7 +33,7 @@ but I cant work out how to position these correctly.  See also ComposeMapTask.
       >
         {{ crumb.caption }} :
       </tspan>
-      <tspan @click="selectTask" class="clickable" v-bind:class="{ selected: selected }">
+      <tspan @click="selectTask" v-bind:class="{ selected: selected }">
         {{ plan.name }}
       </tspan>
       <tspan v-if="hasError" fill="#E74C3C">[!]</tspan>
@@ -71,9 +71,7 @@ export default {
     },
     hasWarning() {
       return this.issues ? this.issues.filter((issue) => issue.type == 'Warning').length > 0 : false
-    }
-  },
-  methods: {
+    },
     crumbs() {
       let result = []
       let localplan = this.plan
@@ -82,7 +80,9 @@ export default {
         result.unshift({ caption: localplan.name, path: localplan.path() })
       }
       return result
-    },
+    }
+  },
+  methods: {
     changePath(evt) {
       this.$emit('select-task', { value: evt.target.dataset.path })
     },
