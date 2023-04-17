@@ -36,7 +36,7 @@ todo:
         </div>
         <div v-if="status.finished">
           <slot name="finished">
-            <div class="d-grid gap-2">
+            <div class="d-grid gap-2 mt-2">
               <h3>Completed</h3>
               <button class="btn btn-outline-secondary d-block" @click="restartEnactment">
                 <font-awesome-icon icon="redo-alt" /> Restart
@@ -51,6 +51,7 @@ todo:
             @update-enactment="updateEnactment"
             :options="options"
             @send-trigger="sendTrigger"
+            class="mt-2"
           />
         </div>
       </div>
@@ -66,18 +67,9 @@ export default {
   emits: ['restart-enactment'],
   computed: {
     taskCount() {
-      console.log('total: ' + (this.enactment ? this.enactment.getTasks().length : 1))
       return this.enactment ? this.enactment.getTasks().length : 1
     },
     progress() {
-      console.log(
-        'finished: ' +
-          (this.enactment
-            ? this.enactment
-                .getTasks()
-                .filter((task) => task.state == 'discarded' || task.state == 'completed').length
-            : 0)
-      )
       return this.enactment
         ? this.enactment
             .getTasks()

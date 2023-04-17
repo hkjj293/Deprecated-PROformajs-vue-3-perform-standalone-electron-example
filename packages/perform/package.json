@@ -2,8 +2,17 @@
   "name": "@openclinical/proformajs-vue3-perform",
   "version": "0.0.1",
   "description": "Vue3 SFCs for enacting proformajs protocols",
-  "main": "index.js",
+  "type": "module",
+  "main": "./dist/proformajs-vue3-perform.umd.cjs",
+  "module": "./dist/proformajs-vue3-perform.js",
+  "exports": {
+    ".": {
+      "import": "./dist/proformajs-vue3-perform.js",
+      "require": "./dist/proformajs-vue3-perform.umd.cjs"
+    }
+  },
   "scripts": {
+    "build": "vite build",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix",
     "format": "prettier --write src/"
   },

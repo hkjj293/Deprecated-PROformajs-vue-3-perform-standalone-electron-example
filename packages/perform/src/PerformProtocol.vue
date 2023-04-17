@@ -58,7 +58,7 @@ import TemplateCustom from './TemplateCustom.vue'
 import TemplateMobile from './TemplateMobile.vue'
 
 export default {
-  name: 'pc-Template',
+  name: 'p-perform',
   props: {
     protocol: Object,
     debug: Boolean,
