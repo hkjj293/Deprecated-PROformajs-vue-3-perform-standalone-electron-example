@@ -42,7 +42,8 @@ values are highlighted and shown with their value.
         <span
           v-for="dd in enactment.getDataDefinitions()"
           :key="key(dd)"
-          :class="'badge rounded-pill ' + 'bg-' + variant(dd) + ' m-1 p-1 clickable'"
+          class="badge rounded-pill m-1 p-1 clickable"
+          :class="{'bg-info': isSelected(dd), 'bg-dark': !isSelected(dd) && hasValue(dd), 'bg-light': !isSelected(dd) && !hasValue(dd), 'text-dark': !isSelected(dd) && !hasValue(dd)}"
           @click="select(dd.name)"
         >
           {{ dd.name }}<span v-if="value(dd) != null"> = {{ badgeValue(value(dd)) }}</span>
@@ -88,12 +89,14 @@ export default {
       if (this.selectedName) {
         return this.enactment.getDataDefinitions().find((dd) => dd.name == this.selectedName)
       } else {
-        if (this.enactment && this.enactment.getDataDefinitions().length > 0) {
-          let dd = this.enactment.getDataDefinitions()[0]
-          this.selectedName = dd.name
-          return dd
-        }
+        return null;
       }
+    }
+  },
+  created() {
+    if (this.enactment && this.enactment.getDataDefinitions().length > 0) {
+      let dd = this.enactment.getDataDefinitions()[0]
+      this.selectedName = dd.name
     }
   },
   methods: {
@@ -115,12 +118,11 @@ export default {
           : value.toString()
         : value
     },
-    variant(dd) {
+    isSelected(dd) {
       return this.selectedName && dd.name == this.selectedName
-        ? 'info'
-        : dd.value != null
-        ? 'dark'
-        : 'light'
+    },
+    hasValue(dd) {
+      return dd.value != null
     },
     select(name) {
       this.selectedName = name
