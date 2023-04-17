@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix",
+    "lint": "eslint ./src --ext .vue,.js,.jsx,.cjs,.mjs --fix",
     "format": "prettier --write src/"
   },
   "dependencies": {
