@@ -9,13 +9,20 @@ This repo will use npm workspaces to create two npm libraries:
 This repo will also use CI to:
 * format the code
 * check the code with a linter
-* run unit test automatically
+* run unit tests automatically
 * run behavioural tests automatically
 * check for dependency vulnerabilities
 
-The original work for this project can be found at https://github.com/hkjj293/PROformajs-vue-3
+The original component work for this project can be found at https://github.com/hkjj293/PROformajs-vue-3
 
-The skeleton for this project created with ``npm init vue@latest`` (3.4.27)
+## Development
+
+Currently you'll need to run ``npx vite build --watch`` in the perform package
+in order to see your changes reflected in the demo as you make them.
+
+# Skeleton
+
+The skeleton for this project was created with ``npm init vue@latest`` (3.4.27)
 which generated the rest of this README.
 
 ---
