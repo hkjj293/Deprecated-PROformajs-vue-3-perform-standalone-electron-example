@@ -22,7 +22,7 @@ export default {
 <template>
   <main class="container">
     <div class="col">
-      <p-protocol :protocol="protocol" class="mt-3"/>
+      <p-protocol :protocol="protocol" class="mt-3" template="development"/>
     </div>
   </main>
 </template>
