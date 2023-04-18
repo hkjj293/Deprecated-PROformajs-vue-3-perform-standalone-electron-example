@@ -1,10 +1,30 @@
 # proformajs-vue3
 
+The evolution of proformajs-vue from vue2 -> vue3
+
+This repo will use npm workspaces to create two npm libraries:
+* proformajs-vue3 - components for creating protocols and running enactments
+* proformajs-vue3-perform - only the components needed to run enactments
+
+This repo will also use CI to:
+* format the code
+* check the code with a linter
+* run unit test automatically
+* run behavioural tests automatically
+* check for dependency vulnerabilities
+
+The original work for this project can be found at https://github.com/hkjj293/PROformajs-vue-3
+
+The skeleton for this project created with ``npm init vue@latest`` (3.4.27)
+which generated the rest of this README.
+
+---
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
 ## Customize configuration
 
