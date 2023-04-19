@@ -77,9 +77,9 @@ todo:
               <div>
                 <!-- used to be a card-deck -->
                 <div class="card">
-                  <template slot="header">
+                  <slot name="header">
                     <h5>Available Tasks</h5>
-                  </template>
+                  </slot>
                   <div class="list-group" v-if="availableTasks.length > 0">
                     <button
                       v-for="task in availableTasks"
@@ -103,9 +103,9 @@ todo:
               <div>
                 <!-- used to be a card-deck -->
                 <div class="card">
-                  <template slot="header">
+                  <slot name="header">
                     <h5>Triggers</h5>
-                  </template>
+                  </slot>
                   <div
                     class="list-group"
                     v-if="status && status.triggers && status.triggers.length > 0"

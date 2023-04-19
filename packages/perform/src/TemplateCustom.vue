@@ -65,8 +65,8 @@ The shortness of breath example uses this meta:
 <template>
   <div v-if="enactment">
     <div class="row">
-      <div v-for="col of cols" :class="'col-' + col.width">
-        <template v-for="comp of col.contents">
+      <div v-for="(col, colidx) of cols" :class="'col-' + col.width" :key="colidx">
+        <template v-for="(comp, compidx) of col.contents" :key="compidx">
           <p-fixed
             v-if="comp.component == 'fixed'"
             :enactment="enactment"

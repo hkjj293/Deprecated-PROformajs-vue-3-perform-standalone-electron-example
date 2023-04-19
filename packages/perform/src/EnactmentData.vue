@@ -43,7 +43,12 @@ values are highlighted and shown with their value.
           v-for="dd in enactment.getDataDefinitions()"
           :key="key(dd)"
           class="badge rounded-pill m-1 p-1 clickable"
-          :class="{'bg-info': isSelected(dd), 'bg-dark': !isSelected(dd) && hasValue(dd), 'bg-light': !isSelected(dd) && !hasValue(dd), 'text-dark': !isSelected(dd) && !hasValue(dd)}"
+          :class="{
+            'bg-info': isSelected(dd),
+            'bg-dark': !isSelected(dd) && hasValue(dd),
+            'bg-light': !isSelected(dd) && !hasValue(dd),
+            'text-dark': !isSelected(dd) && !hasValue(dd)
+          }"
           @click="select(dd.name)"
         >
           {{ dd.name }}<span v-if="value(dd) != null"> = {{ badgeValue(value(dd)) }}</span>
@@ -89,7 +94,7 @@ export default {
       if (this.selectedName) {
         return this.enactment.getDataDefinitions().find((dd) => dd.name == this.selectedName)
       } else {
-        return null;
+        return null
       }
     }
   },

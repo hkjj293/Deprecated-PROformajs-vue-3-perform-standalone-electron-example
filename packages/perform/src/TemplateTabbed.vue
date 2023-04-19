@@ -99,6 +99,7 @@ import moment from 'moment'
 
 export default {
   mixins: [EnactmentMixin],
+  emits: ['restart-enactment', 'change-option'],
   components: {
     'p-tabbed-tabs': TemplateTabbedTabs
   },
