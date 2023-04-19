@@ -45,7 +45,8 @@
     {
       "class": "Integer",
       "caption": "Coapplicant income",
-      "name": "coapplicant_income"
+      "name": "coapplicant_income",
+      "description": "Some heavy text"
     },
     {
       "class": "Integer",
@@ -108,12 +109,14 @@
         {
           "class": "Candidate",
           "caption": "Grant",
+          "description": "Grants are hard to find",
           "name": "grant",
           "recommendCondition": "net_support('grant')>1",
           "arguments": [
             {
               "class": "Argument",
               "caption": "loan_amount<0.40*total_income*loan_term/60",
+              "description": "The <em>standard</em> formula",
               "support": 1,
               "activeCondition": "loan_amount<0.40*total_income*loan_term/60"
             },
@@ -134,6 +137,7 @@
         {
           "class": "Candidate",
           "caption": "Deny",
+          "description": "Deny by default",
           "name": "deny",
           "recommendCondition": "net_support('grant')<=1"
         }
