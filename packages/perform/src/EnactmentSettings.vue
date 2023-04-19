@@ -17,16 +17,15 @@ element that is then used as a runtime html template by the popover comoponent.
 </docs>
 
 <template>
-  <button
-    :id="id"
-    type="button"
-    class="btn btn-outline-secondary"
-    data-bs-toggle="popover"
-    :data-bs-placement="placement"
-    data-bs-title="Review settings"
-  >
-    <font-awesome-icon icon="cog" />
-  </button>
+  <popover
+    title="Review settings"
+    :target="id + '_content'"
+    variant="outline-secondary"
+    :placement="placement"
+    icon="cog"
+    :focus="false"
+    @shown="openPopover"
+  />
   <div :id="id + '_content'" hidden>
     <label v-if="debug"
       ><input type="checkbox" :name="id + '_value:debug'" /> Debug expressions</label
@@ -61,7 +60,7 @@ element that is then used as a runtime html template by the popover comoponent.
 </template>
 
 <script>
-import { Popover } from 'bootstrap'
+import PopoverButton from './PopoverButton.vue'
 
 const optionKeys = [
   'Decision.showInactiveArguments',
@@ -95,21 +94,14 @@ export default {
       default: 'bottom'
     }
   },
+  components: {
+    popover: PopoverButton
+  },
   emits: ['change-option', 'restart-enactment'],
   data() {
     return {
       popover: null
     }
-  },
-  mounted() {
-    // initialise popover
-    let elem = document.getElementById(this.id)
-    this.popover = new Popover(elem, {
-      html: true,
-      sanitize: false,
-      content: () => document.getElementById(this.id + '_content').innerHTML
-    })
-    elem.addEventListener('shown.bs.popover', this.openPopover)
   },
   methods: {
     openPopover() {

@@ -3,13 +3,7 @@ A simple wrapper for bootstrap's popover button
 </docs>
 
 <template>
-  <button
-    type="button"
-    data-bs-toggle="popover"
-    data-bs-trigger="focus"
-    class="btn"
-    :class="classes"
-  >
+  <button type="button" data-bs-toggle="popover" class="btn" :class="classes">
     <font-awesome-icon :icon="icon" />
   </button>
 </template>
@@ -50,6 +44,10 @@ export default {
     class: {
       type: String,
       required: false
+    },
+    focus: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -57,12 +55,15 @@ export default {
       popover: null
     }
   },
-  emits: ['hide.bs.popover', 'hidden.bs.popover', 'inserted.bs.popover', 'show.bs.popover', 'shown.bs.popover'],
+  emits: ['shown'],
   mounted() {
     const config = {
       placement: this.placement,
       html: this.html,
       sanitize: this.sanitize
+    }
+    if (this.focus) {
+      config.trigger = 'focus'
     }
     config.content = this.target
       ? () => document.getElementById(this.target).innerHTML
@@ -71,10 +72,11 @@ export default {
       config.title = this.title
     }
     this.popover = new Popover(this.$el, config)
+    this.$el.addEventListener('shown.bs.popover', (evt) => this.$emit('shown', evt))
   },
   computed: {
     classes() {
-      return 'btn-' + this.variant + (this.class ? ' ' + this.class : '');
+      return 'btn-' + this.variant + (this.class ? ' ' + this.class : '')
     }
   }
 }
