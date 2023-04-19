@@ -332,7 +332,7 @@ export default {
     'p-source': EnactmentSource,
     'p-expression': EnactmentExpression,
     'p-markdown': EnactmentMarkdown,
-    'popover': PopoverButton
+    popover: PopoverButton
   },
   data: function () {
     return {
