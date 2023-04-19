@@ -34,6 +34,7 @@ Provides a UI for a proformajs Enactment.
               class="d-none d-sm-inline ms-1"
               :options="options"
               placement="left"
+              :restart="false"
               @change-option="OnUpdateOptions"
               @restart-enactment="$emit('restart-enactment')"
             />
