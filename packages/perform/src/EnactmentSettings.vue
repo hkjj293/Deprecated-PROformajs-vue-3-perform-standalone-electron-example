@@ -3,64 +3,57 @@ Provides a UI settings button that opens a popover form.
 
 # props
 
+* id - customise ids in component
 * options - review settings
 * debug - show debug option
 * restart - show restart option
 * placement - control placement of popover
 
-# events
+# notes
 
-* change-option - signals an option change
-* restart-enactment
+The content of the popover (the second, ``#_content`` element in the template)
+does not have vue web component behaviour.  It is rendered by vue as a hidden
+element that is then used as a runtime html template by the popover comoponent.
 </docs>
 
 <template>
-  <div>
-    <PopoverButton
-      :id="id"
-      :msg="message"
-      :targetId="'target:' + id"
-      :placement="placement"
-      varient="outline-secondary"
-      trigger="click"
-      :title="title"
-      @shown="OnShowPopover"
+  <button
+    :id="id"
+    type="button"
+    class="btn btn-outline-secondary"
+    data-bs-toggle="popover"
+    :data-bs-placement="placement"
+    data-bs-title="Review settings"
+  >
+    <font-awesome-icon icon="cog" />
+  </button>
+  <div :id="id + '_content'" hidden>
+    <label v-if="debug"
+      ><input type="checkbox" :name="id + '_value:debug'" /> Debug expressions</label
     >
-      <font-awesome-icon icon="cog" />
-    </PopoverButton>
-    <div :id="'target:' + id" hidden>
-      <label class="mt-2" v-if="debug"
-        ><input :name="'target:' + id + ':debug'" type="checkbox" /> Debug expressions</label
-      >
-      <div class="fw-bold mt-2">Decisions</div>
-      <label class="mt-2">
-        <input :name="'target:' + id + ':Decision:showInactiveArguments'" type="checkbox" />
-        Show inactive arguments
-      </label>
-      <label class="mt-2"
-        ><input :name="'target:' + id + ':Decision:showExpressions'" type="checkbox" /> Show
-        expressions</label
-      >
-      <label class="mt-2"
-        ><input :name="'target:' + id + ':Candidate:autoConfirmRecommended'" type="checkbox" />
-        Auto-confirm candidates</label
-      >
-      <label class="mt-2"
-        ><input :name="'target:' + id + ':Decision:allowDownloads'" type="checkbox" /> Allow
-        Downloads</label
-      >
-      <div class="fw-bold mt-2">Enquiries</div>
-      <label class="mt-2"
-        ><input :name="'target:' + id + ':Enquiry:useDefaults'" type="checkbox" /> Use
-        defaults</label
-      >
-      <button
-        :name="'target:' + id + ':send:restart'"
-        v-if="restart"
-        class="btn btn-outline-secondary btn-sm d-block mt-2"
-        @click="sendRestart"
-        block
-      >
+    <div class="fw-bold mt-2">Decisions</div>
+    <label class="mt-1"
+      ><input type="checkbox" :name="id + '_value:Decision.showInactiveArguments'" /> Show inactive
+      arguments</label
+    >
+    <label class="mt-1"
+      ><input type="checkbox" :name="id + '_value:Decision.showExpressions'" /> Show
+      expressions</label
+    >
+    <label class="mt-1"
+      ><input type="checkbox" :name="id + '_value:Candidate.autoConfirmRecommended'" /> Auto-confirm
+      candidates</label
+    >
+    <label class="mt-1"
+      ><input type="checkbox" :name="id + '_value:Decision.allowDownloads'" /> Allow
+      Downloads</label
+    >
+    <div class="fw-bold mt-2">Enquiries</div>
+    <label class="mt-1"
+      ><input type="checkbox" :name="id + '_value:Enquiry.useDefaults'" /> Use defaults</label
+    >
+    <div class="d-grid gap-2">
+      <button :name="id + '_restart'" v-if="restart" class="btn btn-outline-secondary btn-sm mt-2">
         <font-awesome-icon icon="redo-alt" /> Restart
       </button>
     </div>
@@ -68,15 +61,26 @@ Provides a UI settings button that opens a popover form.
 </template>
 
 <script>
-import PopoverButton from './PopoverButton.vue'
+import { Popover } from 'bootstrap'
+
+const optionKeys = [
+  'Decision.showInactiveArguments',
+  'Decision.showExpressions',
+  'Decision.allowDownloads',
+  'Enquiry.useDefaults',
+  'Candidate.autoConfirmRecommended',
+  'debug'
+]
 
 export default {
-  components: { PopoverButton },
   props: {
-    options: Object,
+    options: {
+      type: Object,
+      required: false
+    },
     id: {
       type: String,
-      default: 'task-settings'
+      default: 'enactment-settings'
     },
     debug: {
       type: Boolean,
@@ -88,64 +92,61 @@ export default {
     },
     placement: {
       type: String,
-      default: 'left'
+      default: 'bottom'
     }
   },
-  emits: ['restart-enactment', 'close', 'change-option'],
+  emits: ['change-option', 'restart-enactment'],
   data() {
     return {
-      message: 'Loading Options...',
-      title: 'Review Settings'
+      popover: null
     }
   },
   mounted() {
-    this.OnShowPopover()
+    // initialise popover
+    let elem = document.getElementById(this.id)
+    this.popover = new Popover(elem, {
+      html: true,
+      sanitize: false,
+      content: () => document.getElementById(this.id + '_content').innerHTML
+    })
+    elem.addEventListener('shown.bs.popover', this.openPopover)
   },
   methods: {
+    openPopover() {
+      // when the popover is closed its content element is destroyed,
+      // so we need to reset form values and reconnect form events
+      // everytime it is opened
+      optionKeys.forEach((key) => {
+        // there will be two copies of each input / button in the DOM
+        const elems = document.getElementsByName(this.id + '_value:' + key)
+        for (const elem of elems) {
+          elem.checked = this.optionFromKey(key)
+          elem.onclick = this.createClickOption(key)
+        }
+      })
+      for (const elem of document.getElementsByName(this.id + '_restart')) {
+        elem.onclick = this.sendRestart
+      }
+    },
+    createClickOption(key) {
+      const keys = key.split('.')
+      const evt = keys.length == 1 ? { option: key } : { category: keys[0], option: keys[1] }
+      return () => {
+        evt.value = !this.optionFromKey(key)
+        this.$emit('change-option', evt)
+      }
+    },
+    optionFromKey(key) {
+      const keys = key.split('.')
+      if (keys.length == 1) {
+        return this.options[key]
+      } else {
+        return this.options[keys[0]][keys[1]]
+      }
+    },
     sendRestart() {
       this.$emit('restart-enactment')
-      //this.$refs[this.id].$emit('close')
-    },
-    OnClickBox(evt) {
-      const d = evt.target.name.split(':')
-      const cat = d.length > 3 ? d[2] : ''
-      const opts = d.length > 3 ? d[3] : d[2]
-      if (d.length > 3) {
-        this.$emit('change-option', {
-          category: cat,
-          option: opts,
-          value: !this.options[cat][opts]
-        })
-      } else {
-        this.$emit('change-option', {
-          option: opts,
-          value: !this.options[opts]
-        })
-      }
-    },
-    OnShowPopover() {
-      this.setOnClick('target:' + this.id + ':debug', this.OnClickBox)
-      this.setOnClick('target:' + this.id + ':Decision:showInactiveArguments', this.OnClickBox)
-      this.setOnClick('target:' + this.id + ':Decision:showExpressions', this.OnClickBox)
-      this.setOnClick('target:' + this.id + ':Candidate:autoConfirmRecommended', this.OnClickBox)
-      this.setOnClick('target:' + this.id + ':Decision:allowDownloads', this.OnClickBox)
-      this.setOnClick('target:' + this.id + ':Enquiry:useDefaults', this.OnClickBox)
-      this.setOnClick('target:' + this.id + ':send:restart', this.sendRestart, false)
-    },
-    setOnClick(eleName, fn, isCheckbox = true) {
-      const eles = document.getElementsByName(eleName)
-      for (const ele of eles) {
-        if (ele.parentElement.parentElement.getAttribute('hidden')) {
-          continue
-        }
-        const d = eleName.split(':')
-        const cat = d.length > 3 ? d[2] : ''
-        const opts = d.length > 3 ? d[3] : d[2]
-        ele.onclick = fn
-        if (isCheckbox) {
-          ele.checked = d.length > 3 ? this.options[cat][opts] : this.options[opts]
-        }
-      }
+      this.popover.hide()
     }
   }
 }
