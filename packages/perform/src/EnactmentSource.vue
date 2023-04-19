@@ -39,9 +39,7 @@ Just about works.  Current coverage shown below.
 
         <!-- If showDescriptionInline && source.description-->
         <template v-if="!showDescriptionInline && source.description">
-          <PopoverButton :msg="message">
-            <font-awesome-icon icon="info-circle" />
-          </PopoverButton>
+          <popover :target="'target:source' + source.path" class="p-1" />
           <div :id="'target:source' + source.path" hidden>
             <p-markdown
               :text="source.description"
@@ -125,8 +123,10 @@ Just about works.  Current coverage shown below.
             @keyup.enter.prevent="handleBlur"
             @keyup.esc="clearInput"
           />
-          <div class="input-group-text" slot="append" v-if="source.class == 'Date'">
-            <font-awesome-icon icon="calendar-alt" />
+          <div class="input-group-text" v-if="source.class == 'Date'">
+            <slot name="append">
+              <font-awesome-icon icon="calendar-alt" />
+            </slot>
           </div>
         </div>
         <!-- single range -->
@@ -156,7 +156,9 @@ Just about works.  Current coverage shown below.
                 @keyup.esc="clearInput"
               />
               <datalist :id="source.name + suffix + 'datalist'">
-                <option v-for="item in source.range">{{ rangeText(item) }}</option>
+                <option v-for="(item, idx) in source.range" :key="idx">
+                  {{ rangeText(item) }}
+                </option>
               </datalist>
             </template>
             <div v-else v-for="(item, idx) in source.range" :key="idx" class="form-check">
@@ -194,8 +196,10 @@ Just about works.  Current coverage shown below.
             @keyup.enter="handleMultiEnter"
             @keyup.esc="resetInput"
           />
-          <div class="input-group-text" slot="append">
-            <font-awesome-icon icon="list" />
+          <div class="input-group-text">
+            <slot name="append">
+              <font-awesome-icon icon="list" />
+            </slot>
           </div>
         </div>
         <!-- multi ranged -->
@@ -231,8 +235,8 @@ import EnactmentMarkdown from './EnactmentMarkdown.vue'
 
 export default {
   components: {
-    PopoverButton,
-    'p-markdown': EnactmentMarkdown
+    'p-markdown': EnactmentMarkdown,
+    popover: PopoverButton
   },
   props: {
     source: Object,
@@ -312,7 +316,6 @@ export default {
       if (evt.target.checked) {
         arr.push(value)
       } else {
-        let idx = arr.indexOf(value)
         if (arr != -1) {
           arr.splice(arr.indexOf(value), 1)
         }
@@ -327,8 +330,9 @@ export default {
       return false
     },
     removeArrayItem(index) {
-      this.value.splice(index, 1)
-      this.$emit('update-source', { action: 'set', source: this.source.name, value: this.value })
+      let updated = this.value.slice()
+      updated.splice(index, 1)
+      this.$emit('update-source', { action: 'set', source: this.source.name, value: updated })
     },
     getValue(text) {
       let val

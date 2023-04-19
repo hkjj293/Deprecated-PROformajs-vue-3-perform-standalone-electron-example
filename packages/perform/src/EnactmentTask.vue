@@ -140,13 +140,11 @@ interactable.
               :text="candidate.description"
               class="mb-1 markdown"
             />
-            <PopoverButton
+            <popover
               v-if="!showCandidateDescriptionInline && candidate.description"
-              :msg="candidate.description"
-              class="pb-1 pt-0 pe-0"
-            >
-              <font-awesome-icon icon="info-circle" />
-            </PopoverButton>
+              :content="candidate.description"
+              class="p-1"
+            />
             <div v-if="options.Decision.showExpressions" class="text-muted font-italic">
               {{ candidate.recommendCondition }}
             </div>
@@ -220,11 +218,7 @@ interactable.
                   @send-trigger="$emit('send-trigger', $event)"
                   class="mb-1 markdown text-muted"
                 />
-                <template v-else>
-                  <PopoverButton :msg="argument.description" class="btn-link btn-sm pb-1 pt-0">
-                    <font-awesome-icon icon="info-circle" />
-                  </PopoverButton>
-                </template>
+                <popover v-else :content="argument.description" class="p-1" />
               </template>
               <div v-if="options.Decision.showExpressions" class="text-muted font-italic">
                 {{ argument.activeCondition }}
@@ -338,7 +332,7 @@ export default {
     'p-source': EnactmentSource,
     'p-expression': EnactmentExpression,
     'p-markdown': EnactmentMarkdown,
-    PopoverButton
+    'popover': PopoverButton
   },
   data: function () {
     return {
@@ -352,7 +346,7 @@ export default {
   computed: {
     sortedCands: function () {
       if (this.task.candidates) {
-        let result = this.task.candidates.sort((left, right) => {
+        let result = this.task.candidates.slice().sort((left, right) => {
           if ((left.recommended && right.recommended) || (!left.recommended && !right.recommended))
             return right.support - left.support
           else if (left.recommended) return -1 // left recommended by not right

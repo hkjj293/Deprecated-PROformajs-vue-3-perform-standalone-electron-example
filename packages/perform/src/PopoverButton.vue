@@ -1,100 +1,81 @@
+<docs>
+A simple wrapper for bootstrap's popover button
+</docs>
+
+<template>
+  <button
+    type="button"
+    data-bs-toggle="popover"
+    data-bs-trigger="focus"
+    class="btn"
+    :class="classes"
+  >
+    <font-awesome-icon :icon="icon" />
+  </button>
+</template>
+
 <script>
 import { Popover } from 'bootstrap'
 
 export default {
-  name: 'PopoverButton',
-  emits: ['shown'],
   props: {
-    msg: {
+    content: String,
+    title: {
       type: String,
-      required: true
+      required: false
     },
-    targetId: {
+    target: {
       type: String
     },
-    varient: {
+    variant: {
       type: String,
       default: 'link'
     },
-    html: {
-      type: Boolean,
-      default: true
+    icon: {
+      type: String,
+      default: 'info-circle'
     },
     placement: {
       type: String,
       default: 'top'
     },
-    trigger: {
-      type: String,
-      default: 'hover'
+    html: {
+      type: Boolean,
+      default: true
     },
-    container: {
-      type: String,
-      default: 'body'
+    sanitize: {
+      type: Boolean,
+      default: false
     },
-    title: {
+    class: {
       type: String,
-      default: 'Title'
-    }
-  },
-  computed: {
-    classes() {
-      return 'btn' + ' btn-' + this.varient
+      required: false
     }
   },
   data() {
-    return { popover: null, message: this.msg }
-  },
-  mounted() {
-    this.popover = new Popover(this.$el, { sanitize: false })
-    if (this.targetId && document.getElementById(this.targetId)) {
-      this.message = document.getElementById(this.targetId).innerHTML
+    return {
+      popover: null
     }
-    this.popover.setContent({
-      '.popover-body': this.message,
-      '.popover-header': this.title
-    })
-    this.$el.addEventListener('shown.bs.popover', this.onShown)
-    this.$el.addEventListener('show.bs.popover', this.onShow)
   },
-  methods: {
-    onShown(evt) {
-      this.$emit('shown')
-    },
-    onShow(evt) {
-      if (this.targetId && document.getElementById(this.targetId)) {
-        this.message = document.getElementById(this.targetId).innerHTML
-      }
-      this.popover.setContent({
-        '.popover-body': this.message,
-        '.popover-header': this.title
-      })
+  emits: ['hide.bs.popover', 'hidden.bs.popover', 'inserted.bs.popover', 'show.bs.popover', 'shown.bs.popover'],
+  mounted() {
+    const config = {
+      placement: this.placement,
+      html: this.html,
+      sanitize: this.sanitize
+    }
+    config.content = this.target
+      ? () => document.getElementById(this.target).innerHTML
+      : this.content
+    if (this.title) {
+      config.title = this.title
+    }
+    this.popover = new Popover(this.$el, config)
+  },
+  computed: {
+    classes() {
+      return 'btn-' + this.variant + (this.class ? ' ' + this.class : '');
     }
   }
 }
 </script>
-
-<template>
-  <button
-    type="button"
-    :class="classes"
-    data-content-id="popover-27"
-    :data-bs-container="container"
-    :data-bs-trigger="trigger"
-    data-bs-toggle="popover"
-    :data-bs-placement="placement"
-    :data-bs-html="html"
-    :data-bs-title="title"
-    :data-bs-content="msg"
-    @blur="onBlur"
-  >
-    <slot />
-  </button>
-</template>
-
-<style>
-p {
-  margin: 0px;
-  padding: 0px;
-}
-</style>
