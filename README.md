@@ -2,9 +2,10 @@
 
 The evolution of proformajs-vue from vue2 -> vue3
 
-This repo will use npm workspaces to create two npm libraries:
+This repo uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces)
+to create two npm libraries:
 * proformajs-vue3 - components for creating protocols and running enactments
-* proformajs-vue3-perform - only the components needed to run enactments
+* proformajs-vue3-perform - a subset of the components needed to run enactments
 
 This repo will also use CI to:
 * format the code
@@ -20,10 +21,18 @@ The original component work for this project can be found at https://github.com/
 Currently you'll need to run ``npx vite build --watch`` in the perform package
 in order to see your changes reflected in the demo as you make them.
 
+### Committing changes
+
+Before committing your changes ensure that your code is linted and formatted
+and that the tests all run green.  Also ensure that a fresh install has no
+security vulnerabilities.
+
 # Skeleton
 
 The skeleton for this project was created with ``npm init vue@latest`` (3.4.27)
 which generated the rest of this README.
+
+Workspaces were then created with ``npm init -w .packages/map`` etc.
 
 ---
 

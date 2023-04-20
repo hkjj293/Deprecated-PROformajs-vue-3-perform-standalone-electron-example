@@ -1,0 +1,12 @@
+{
+  "name": "proformajs-vue3-compose",
+  "version": "0.0.1",
+  "description": "Vue3 SFCs that can be used to compose proformajs protocols",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

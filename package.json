@@ -36,6 +36,7 @@
   },
   "workspaces": [
     "packages/map",
-    "packages/perform"
+    "packages/perform",
+    "packages/compose"
   ]
 }
