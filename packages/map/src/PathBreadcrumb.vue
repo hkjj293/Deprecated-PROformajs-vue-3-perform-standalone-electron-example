@@ -25,7 +25,7 @@ but I cant work out how to position these correctly.  See also ComposeMapTask.
   <g id="breadcrumb">
     <text :x="offset + 10" y="20">
       <tspan
-        v-for="(crumb, idx) in crumbs"
+        v-for="crumb in crumbs"
         class="clickable"
         @click="changePath"
         :data-path="crumb.path"

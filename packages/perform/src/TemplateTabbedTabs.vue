@@ -85,31 +85,47 @@ export default {
   computed: {
     tabs() {
       let result = []
-      let activated = false // this need happen only once
       if (this.plan && this.plan.tasks) {
         for (const task of this.plan.tasks) {
           if (task.state == 'dormant' || task.state == 'in_progress') {
             result.push(task)
-            if (this.selected && !activated) {
-              if (task.path == this.selected) {
-                this.activeTab = task.path
-                activated = true
-              }
-              // selected task is a child of this task
-              if (this.selected.length > task.path.length && this.selected.startsWith(task.path)) {
-                this.activeTab = task.path
-                activated = true
-              }
-              // this task is a child of the selected task
-              if (task.path.length > this.selected.length && task.path.startsWith(this.selected)) {
-                this.$emit('select-task', { value: task.path })
-                activated = true
-              }
-            }
           }
         }
       }
       return result
+    }
+  },
+  mounted() {
+    this.checkActiveTab()
+  },
+  methods: {
+    checkActiveTab() {
+      let activated = false
+      if (this.plan && this.plan.tasks) {
+        for (const task of this.plan.tasks) {
+          if (this.selected && !activated) {
+            if (task.path == this.selected) {
+              this.activeTab = task.path
+              activated = true
+            }
+            // selected task is a child of this task
+            if (this.selected.length > task.path.length && this.selected.startsWith(task.path)) {
+              this.activeTab = task.path
+              activated = true
+            }
+            // this task is a child of the selected task
+            if (task.path.length > this.selected.length && task.path.startsWith(this.selected)) {
+              this.$emit('select-task', { value: task.path })
+              activated = true
+            }
+          }
+        }
+      }
+    }
+  },
+  watch: {
+    plan() {
+      this.checkActiveTab()
     }
   }
 }
