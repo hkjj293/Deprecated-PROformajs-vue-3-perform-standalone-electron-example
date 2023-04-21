@@ -18,41 +18,84 @@ element that is then used as a runtime html template by the popover comoponent.
 
 <template>
   <popover
+    :id="id"
     title="Review settings"
+    content="Loading options ..."
     :target="id + '_content'"
     variant="outline-secondary"
     :placement="placement"
-    icon="cog"
-    :focus="false"
-    @shown="openPopover"
-  />
-  <div :id="id + '_content'" hidden>
+    trigger="click"
+    :class="classes"
+    :ref="id"
+  >
+    <font-awesome-icon icon="cog" />
+  </popover>
+  <div :id="id + '_content'">
     <label v-if="debug"
-      ><input type="checkbox" :name="id + '_value:debug'" /> Debug expressions</label
+      ><input
+        type="checkbox"
+        :checked="options.debug"
+        @click="changeOption('debug', !options.debug)"
+      />
+      Debug expressions</label
     >
     <div class="fw-bold mt-2">Decisions</div>
     <label class="mt-1"
-      ><input type="checkbox" :name="id + '_value:Decision.showInactiveArguments'" /> Show inactive
-      arguments</label
+      ><input
+        type="checkbox"
+        :checked="options.Decision.showInactiveArguments"
+        @click="
+          changeOption('showInactiveArguments', !options.Decision.showInactiveArguments, 'Decision')
+        "
+      />
+      Show inactive arguments</label
     >
     <label class="mt-1"
-      ><input type="checkbox" :name="id + '_value:Decision.showExpressions'" /> Show
-      expressions</label
+      ><input
+        type="checkbox"
+        :checked="options.Decision.showExpressions"
+        @click="changeOption('showExpressions', !options.Decision.showExpressions, 'Decision')"
+      />
+      Show expressions</label
     >
     <label class="mt-1"
-      ><input type="checkbox" :name="id + '_value:Candidate.autoConfirmRecommended'" /> Auto-confirm
-      candidates</label
+      ><input
+        type="checkbox"
+        :checked="options.Candidate.autoConfirmRecommended"
+        @click="
+          changeOption(
+            'autoConfirmRecommended',
+            !options.Candidate.autoConfirmRecommended,
+            'Candidate'
+          )
+        "
+      />
+      Auto-confirm candidates</label
     >
     <label class="mt-1"
-      ><input type="checkbox" :name="id + '_value:Decision.allowDownloads'" /> Allow
-      Downloads</label
+      ><input
+        type="checkbox"
+        :checked="options.Decision.allowDownloads"
+        @click="changeOption('allowDownloads', !options.Decision.allowDownloads, 'Decision')"
+      />
+      Allow Downloads</label
     >
     <div class="fw-bold mt-2">Enquiries</div>
     <label class="mt-1"
-      ><input type="checkbox" :name="id + '_value:Enquiry.useDefaults'" /> Use defaults</label
+      ><input
+        type="checkbox"
+        :checked="options.Enquiry.useDefaults"
+        @click="changeOption('useDefaults', !options.Enquiry.useDefaults, 'Enquiry')"
+      />
+      Use defaults</label
     >
     <div class="d-grid gap-2">
-      <button :name="id + '_restart'" v-if="restart" class="btn btn-outline-secondary btn-sm mt-2">
+      <button
+        :name="id + '_restart'"
+        v-if="restart"
+        class="btn btn-outline-secondary btn-sm mt-2"
+        @click="sendRestart"
+      >
         <font-awesome-icon icon="redo-alt" /> Restart
       </button>
     </div>
@@ -61,15 +104,6 @@ element that is then used as a runtime html template by the popover comoponent.
 
 <script>
 import PopoverButton from './PopoverButton.vue'
-
-const optionKeys = [
-  'Decision.showInactiveArguments',
-  'Decision.showExpressions',
-  'Decision.allowDownloads',
-  'Enquiry.useDefaults',
-  'Candidate.autoConfirmRecommended',
-  'debug'
-]
 
 export default {
   props: {
@@ -92,53 +126,35 @@ export default {
     placement: {
       type: String,
       default: 'bottom'
+    },
+    class: {
+      type: String,
+      required: false
     }
   },
   components: {
     popover: PopoverButton
   },
   emits: ['change-option', 'restart-enactment'],
-  data() {
-    return {
-      popover: null
+  computed: {
+    classes() {
+      return this.class
     }
   },
   methods: {
-    openPopover() {
-      // when the popover is closed its content element is destroyed,
-      // so we need to reset form values and reconnect form events
-      // everytime it is opened
-      optionKeys.forEach((key) => {
-        // there will be two copies of each input / button in the DOM
-        const elems = document.getElementsByName(this.id + '_value:' + key)
-        for (const elem of elems) {
-          elem.checked = this.optionFromKey(key)
-          elem.onclick = this.createClickOption(key)
-        }
-      })
-      for (const elem of document.getElementsByName(this.id + '_restart')) {
-        elem.onclick = this.sendRestart
+    changeOption(option, value, category) {
+      const evt = {
+        option: option,
+        value: value
       }
-    },
-    createClickOption(key) {
-      const keys = key.split('.')
-      const evt = keys.length == 1 ? { option: key } : { category: keys[0], option: keys[1] }
-      return () => {
-        evt.value = !this.optionFromKey(key)
-        this.$emit('change-option', evt)
+      if (category) {
+        evt.category = category
       }
-    },
-    optionFromKey(key) {
-      const keys = key.split('.')
-      if (keys.length == 1) {
-        return this.options[key]
-      } else {
-        return this.options[keys[0]][keys[1]]
-      }
+      this.$emit('change-option', evt)
     },
     sendRestart() {
       this.$emit('restart-enactment')
-      this.popover.hide()
+      this.$refs[this.id].popover.hide()
     }
   }
 }

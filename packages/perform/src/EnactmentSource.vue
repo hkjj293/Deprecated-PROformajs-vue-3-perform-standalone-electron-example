@@ -39,8 +39,10 @@ Just about works.  Current coverage shown below.
 
         <!-- If showDescriptionInline && source.description-->
         <template v-if="!showDescriptionInline && source.description">
-          <popover :target="'target:source' + source.path" class="p-1" />
-          <div :id="'target:source' + source.path" hidden>
+          <popover content="Loading source" :target="'target:source' + source.path" class="p-1">
+            <font-awesome-icon icon="info-circle" />
+          </popover>
+          <div :id="'target:source' + source.path">
             <p-markdown
               :text="source.description"
               @send-trigger="$emit('send-trigger', $event)"
