@@ -7,12 +7,11 @@ to create two npm libraries:
 * proformajs-vue3 - components for creating protocols and running enactments
 * proformajs-vue3-perform - a subset of the components needed to run enactments
 
-This repo will also use CI to:
-* format the code
+This repo uses CI to:
+* check the code format with prettier
 * check the code with a linter
-* run unit tests automatically
-* run behavioural tests automatically
 * check for dependency vulnerabilities
+* run behavioural tests automatically
 
 The original component work for this project can be found at https://github.com/hkjj293/PROformajs-vue-3
 
@@ -20,6 +19,12 @@ The original component work for this project can be found at https://github.com/
 
 Currently you'll need to run ``npx vite build --watch`` in the perform package
 in order to see your changes reflected in the demo as you make them.
+
+### testing
+
+There are a cypress e2e tests developed.
+
+These can be run in development with ``npm run test:e2e:dev`` (tested with chrome).
 
 ### Committing changes
 
