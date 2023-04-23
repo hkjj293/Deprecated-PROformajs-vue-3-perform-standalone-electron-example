@@ -17,20 +17,18 @@ The original component work for this project can be found at https://github.com/
 
 ## Development
 
-Currently you'll need to run ``npx vite build --watch`` in the perform package
+You'll need to run ``npx vite build --watch`` in the package that your working
 in order to see your changes reflected in the demo as you make them.
 
-### testing
+### Testing
 
-There are a cypress e2e tests developed.
-
-These can be run in development with ``npm run test:e2e:dev`` (tested with chrome).
+Cypress e2e tests can be run in development with ``npm run test:e2e:dev`` (tested with chrome).
 
 ### Committing changes
 
-Before committing your changes ensure that your code is linted and formatted
-and that the tests all run green.  Also ensure that a fresh install has no
-security vulnerabilities.
+Before creating a merge request or pushing your changes to main please ensure
+that your code is linted and formatted and that the tests all run green.  
+Also ensure that a fresh install has no security vulnerabilities.
 
 # Skeleton
 
