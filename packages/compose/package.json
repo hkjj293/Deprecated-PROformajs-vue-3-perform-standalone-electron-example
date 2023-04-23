@@ -5,7 +5,9 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "vite build",
+    "lint": "eslint ./src --ext .vue,.js,.jsx,.cjs,.mjs --fix",
+    "format": "prettier --write src/"
   },
   "author": "",
   "license": "ISC"
