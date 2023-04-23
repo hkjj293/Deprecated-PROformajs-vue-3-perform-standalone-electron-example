@@ -11,7 +11,7 @@ install_dependencies:
   stage: build
   script:
     - npm ci
-    - npm run build --workspaces
+    - npm run build
   artifacts:
     paths:
       - node_modules/
@@ -21,7 +21,7 @@ cypress:
   stage: test
   script:
     - npm ci
-    - npm run build --workspaces
+    - npm run build
     - npm run test:e2e
 
 prettier:
