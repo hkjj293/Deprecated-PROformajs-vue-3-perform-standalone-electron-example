@@ -8,19 +8,12 @@ Provides a UI settings button that opens a popover form.
 * debug - show debug option
 * restart - show restart option
 * placement - control placement of popover
-
-# notes
-
-The content of the popover (the second, ``#_content`` element in the template)
-does not have vue web component behaviour.  It is rendered by vue as a hidden
-element that is then used as a runtime html template by the popover comoponent.
 </docs>
 
 <template>
   <popover
     :id="id"
     title="Review settings"
-    content="Loading options ..."
     :target="id + '_content'"
     variant="outline-secondary"
     :placement="placement"

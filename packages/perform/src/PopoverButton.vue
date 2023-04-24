@@ -1,18 +1,23 @@
 <docs>
-A simple wrapper for bootstrap's popover button
+A wrapper for bootstrap's popover button
+
+### Notes
+
+For the settings popover we use click trigger (not hover) and then
+the problem with this is that clicking on the form closes it and
+we dont want that, hence the handling of the click event.
 </docs>
 
 <template>
   <button
     type="button"
-    :class="classes"
-    data-bs-container="body"
-    :data-bs-trigger="trigger"
     data-bs-toggle="popover"
+    :data-bs-trigger="trigger"
     :data-bs-placement="placement"
     :data-bs-html="html"
     :data-bs-title="title ? title : null"
     :data-bs-content="renderedContent"
+    :class="classes"
   >
     <slot>
       <font-awesome-icon icon="info-circle" />
@@ -25,15 +30,11 @@ import { Popover } from 'bootstrap'
 
 export default {
   name: 'PopoverButton',
-  emits: ['shown', 'show', 'click', 'hide'],
   props: {
     content: {
       type: String,
-      required: true
+      default: "Loading..."
     },
-    /**
-     * The id of target element.
-     */
     target: {
       type: String,
       default: null
@@ -55,7 +56,8 @@ export default {
       default: 'hover'
     },
     title: {
-      type: String
+      type: String,
+      required: false
     },
     class: {
       type: String,
@@ -85,19 +87,11 @@ export default {
     if (this.target) {
       document.addEventListener('click', this.onClick)
     }
-    this.$el.addEventListener('shown.bs.popover', this.onShown)
-    this.$el.addEventListener('show.bs.popover', this.onShow)
   },
   beforeUnmount() {
     document.removeEventListener('click', this.onClick)
   },
   methods: {
-    onShown() {
-      this.$emit('shown')
-    },
-    onShow() {
-      this.$emit('show')
-    },
     onClick: function (event) {
       if (
         this.target &&
@@ -112,3 +106,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.markdown :last-child {
+  margin-bottom: 0;
+}
+
+.popover-body {
+  --bs-popover-body-padding-x: 0.5rem;
+  --bs-popover-body-padding-y: 0.5rem;
+}
+</style>

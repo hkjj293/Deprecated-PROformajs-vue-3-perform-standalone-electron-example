@@ -39,9 +39,7 @@ Just about works.  Current coverage shown below.
 
         <!-- If showDescriptionInline && source.description-->
         <template v-if="!showDescriptionInline && source.description">
-          <popover content="Loading source" :target="'target:source' + source.path" class="p-1">
-            <font-awesome-icon icon="info-circle" />
-          </popover>
+          <popover :target="'target:source' + source.path" class="p-1" />
           <div :id="'target:source' + source.path">
             <p-markdown
               :text="source.description"
@@ -417,14 +415,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.markdown :last-child {
-  margin-bottom: 0;
-}
-
-.popover-body {
-  --bs-popover-body-padding-x: 0.5rem;
-  --bs-popover-body-padding-y: 0.5rem;
-}
-</style>
