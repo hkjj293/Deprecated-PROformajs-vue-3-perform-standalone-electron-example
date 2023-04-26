@@ -111,7 +111,7 @@ export default {
           .join(':')
         plan = this.protocol.getComponent(designpath)
       } catch (e) {
-        console.err('dropping back to root', this.selectedplan, e)
+        console.error('dropping back to root', this.selectedplan, e)
         plan = this.protocol
       }
       return plan

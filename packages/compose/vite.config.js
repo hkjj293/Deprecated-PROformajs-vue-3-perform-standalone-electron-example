@@ -7,7 +7,7 @@ import { resolve } from 'path';
 const vueDocsPlugin = {
   name: 'vue-docs',
   transform(_code, id) {
-    if(!/vue&type=docs/.test(id)) return
+    if (!/vue&type=docs/.test(id)) return
     return `export default ''`
   }
 }

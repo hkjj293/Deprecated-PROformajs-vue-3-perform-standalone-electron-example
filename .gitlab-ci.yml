@@ -21,8 +21,12 @@ cypress:
   stage: test
   script:
     - npm ci
-    - npm run build
     - npm run test:e2e
+  artifacts:
+    when: always
+    paths:
+      - cypress/screenshots/**/*.png
+    expire_in: 1 day
 
 prettier:
   stage: format
