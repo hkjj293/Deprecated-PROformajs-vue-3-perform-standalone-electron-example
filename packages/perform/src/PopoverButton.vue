@@ -33,7 +33,7 @@ export default {
   props: {
     content: {
       type: String,
-      default: "Loading..."
+      default: 'Loading...'
     },
     target: {
       type: String,
@@ -53,7 +53,7 @@ export default {
     },
     trigger: {
       type: String,
-      default: 'hover'
+      default: 'hover focus'
     },
     title: {
       type: String,

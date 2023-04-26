@@ -294,6 +294,7 @@ import { EnactmentMixin } from './perform'
 
 export default {
   mixins: [EnactmentMixin],
+  emits: ['change-option'],
   methods: {
     OnUpdateOptions(opts) {
       this.$emit('change-option', opts)

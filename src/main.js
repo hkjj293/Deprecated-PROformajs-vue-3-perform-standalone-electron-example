@@ -1,9 +1,20 @@
-import { createApp } from 'vue'
+import { createApp, nextTick } from 'vue'
 import App from './App.vue'
 
 // Import our custom CSS
 import './assets/styles.scss'
+import * as bootstrap from 'bootstrap'
+window.bootstrap = bootstrap
 
-import ProformajsVue from '@openclinical/proformajs-vue3-perform'
+import ProformajsVuePerform from '@openclinical/proformajs-vue3-perform'
 
-createApp(App).use(ProformajsVue).mount('#app')
+createApp(App)
+  .directive('focus', {
+    inserted: function (el) {
+      nextTick(function () {
+        el.focus()
+      })
+    }
+  })
+  .use(ProformajsVuePerform)
+  .mount('#app')

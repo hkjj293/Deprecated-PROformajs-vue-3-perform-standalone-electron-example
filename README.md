@@ -1,4 +1,5 @@
 # proformajs-vue3
+[![pipeline status](https://gitlab.com/openclinical/proformajs-vue3/badges/compose-package/pipeline.svg)](https://gitlab.com/openclinical/proformajs-vue3/-/commits/compose-package)
 
 The evolution of proformajs-vue from vue2 -> vue3
 

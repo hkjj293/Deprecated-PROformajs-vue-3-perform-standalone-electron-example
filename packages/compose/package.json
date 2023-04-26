@@ -1,14 +1,27 @@
 {
-  "name": "proformajs-vue3-compose",
+  "name": "@openclinical/proformajs-vue3-compose",
   "version": "0.0.1",
   "description": "Vue3 SFCs that can be used to compose proformajs protocols",
-  "main": "index.js",
-  "devDependencies": {},
+  "type": "module",
+  "main": "./dist/proformajs-vue3-compose.umd.cjs",
+  "module": "./dist/proformajs-vue3-compose.js",
+  "exports": {
+    ".": {
+      "import": "./dist/proformajs-vue3-compose.js",
+      "require": "./dist/proformajs-vue3-compose.umd.cjs"
+    }
+  },
   "scripts": {
     "build": "vite build",
     "lint": "eslint ./src --ext .vue,.js,.jsx,.cjs,.mjs --fix",
     "format": "prettier --write src/"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "@openclinical/proformajs-vue3-map": "file:../map",
+    "moment": "^2.29.4",
+    "hammerjs": "^2.0.8",
+    "vue3-ace-editor": "^2.2.2"
+  },
+  "author": "Matt South",
+  "license": "GPL-3"
 }

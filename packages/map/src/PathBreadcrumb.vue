@@ -47,8 +47,8 @@ but I cant work out how to position these correctly.  See also ComposeMapTask.
         {{ plan.dataDefinitions.length }} data definition<template
           v-if="plan.dataDefinitions.length > 1"
           >s</template
-        ></tspan
-      >
+        >
+      </tspan>
     </text>
     <line :x1="offset" :y1="height" :x2="width" :y2="height" stroke="gray"></line>
   </g>
