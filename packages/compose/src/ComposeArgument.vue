@@ -41,45 +41,12 @@ Provides the means to review and edit a PROformajs argument's attributes and chi
         Next &gt;
       </button>
     </div>
-    <ul
-      class="nav nav-tabs"
-      :id="
-        'c-arg-tabs-' +
-        (this.plan && this.plan.name ? this.plan.name.replaceAll(':', '-') : 'no-name')
-      "
-      role="tablist"
+    <t-tabs
+      small
+      v-model="tabIndex"
+      :id="'c-arg-tabs-' + (this.path ? this.path.replaceAll(':', '-') : 'no-name')"
     >
-      <li class="nav-item" role="presentation">
-        <button
-          :class="'nav-link ' + (tabIndex == 0 ? 'active' : '')"
-          :id="'c-arg-tabs'"
-          data-bs-toggle="tab"
-          :data-bs-target="'#c-arg-tabs-details'"
-          type="button"
-          role="tab"
-          :aria-controls="'c-arg-tabs-details'"
-          :aria-selected="true"
-        >
-          Details
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          :class="'nav-link ' + (tabIndex == 1 ? 'active' : '')"
-          :id="'c-arg-tabs'"
-          data-bs-toggle="tab"
-          :data-bs-target="'#c-arg-tabs-condition'"
-          type="button"
-          role="tab"
-          :aria-controls="'c-arg-tabs-condition'"
-          :aria-selected="true"
-        >
-          Condition
-        </button>
-      </li>
-    </ul>
-    <div class="tab-content mt-2">
-      <div class="tab-pane active" id="c-arg-tabs-details">
+      <t-tab title="Details" key="details" id="c-arg-tabs-details">
         <form>
           <c-input att="caption" :comp="argument" @change-attribute="updateAttribute" />
           <c-textarea att="description" :comp="argument" @change-attribute="updateAttribute" />
@@ -118,8 +85,8 @@ Provides the means to review and edit a PROformajs argument's attributes and chi
             </div>
           </div>
         </form>
-      </div>
-      <div class="tab-pane" id="c-arg-tabs-condition">
+      </t-tab>
+      <t-tab title="Condition" key="condition" id="c-arg-tabs-condition">
         <c-condition
           att="activeCondition"
           :comp="argument"
@@ -127,12 +94,13 @@ Provides the means to review and edit a PROformajs argument's attributes and chi
           :issues="attributeIssues('activeCondition')"
           @change-attribute="updateAttribute"
         />
-      </div>
-    </div>
+      </t-tab>
+    </t-tabs>
   </div>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import ComposeInput from './ComposeInput.vue'
 import ComposeCondition from './ComposeCondition.vue'
 import ComposeTextArea from './ComposeTextArea.vue'
@@ -147,7 +115,9 @@ export default {
   components: {
     'c-input': ComposeInput,
     'c-condition': ComposeCondition,
-    'c-textarea': ComposeTextArea
+    'c-textarea': ComposeTextArea,
+    't-tab': Tab,
+    't-tabs': Tabs
   },
   data() {
     return {

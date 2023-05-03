@@ -18,70 +18,46 @@ Managing the active tab is slightly tricky as if you click a plan task tab you w
 </docs>
 
 <template>
-  <div class="card border-0">
-    <div class="card-header">
-      <ul
-        class="nav nav-tabs card-header-tabs"
-        :id="
-          'review-tabs-' +
-          (this.plan && this.plan.name ? this.plan.name.replaceAll(':', '-') : 'no-name')
-        "
-        role="tablist"
-      >
-        <li class="nav-item" role="presentation" v-for="task in tabs" :key="task.path">
-          <button
-            :class="
-              'nav-link ' +
-              (activeTab == task.path ? 'active ' : '') +
-              (task.state != 'in_progress' ? 'disabled' : '')
-            "
-            :id="'tabs-' + task.path.replaceAll(':', '-')"
-            data-bs-toggle="tab"
-            :data-bs-target="'#tabs-content-' + task.path.replaceAll(':', '-')"
-            type="button"
-            role="tab"
-            :aria-controls="'tabs-content-' + task.path.replaceAll(':', '-')"
-            :aria-selected="activeTab == task.path"
-            @click="$emit('select-task', { value: task.path })"
-          >
-            {{ task.caption || task.name }}
-          </button>
-        </li>
-      </ul>
-    </div>
-    <div class="card-body p-0">
-      <div class="tab-content">
-        <div
-          v-for="task in tabs"
-          :key="'content-' + task.path"
-          :id="'tabs-content-' + task.path.replaceAll(':', '-')"
-          :class="'tab-pane ' + (activeTab == task.path ? 'active ' : '')"
-          role="tabpanel"
-          :aria-labelledby="'tabs-content-' + task.path.replaceAll(':', '-')"
-          tabindex="0"
-        >
-          <p-tabbed-tabs
-            style="border-radius: 0px; border: none"
-            v-if="Object.keys(task).includes('tasks')"
-            :plan="task"
-            :selected="selected"
-            @select-task="$emit('select-task', $event)"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
+  <t-tabs
+    small
+    :id="'review-tabs-' + (this.path ? this.path.replaceAll(':', '-') : 'no-name')"
+    card
+  >
+    <t-tab
+      :active="activeTab == task.path"
+      :disabled="task.state != 'in_progress'"
+      v-for="task in tabs"
+      :title="task.caption || task.name"
+      :key="'content-' + task.path"
+      :id="'tabs-content-' + task.path.replaceAll(':', '-')"
+    >
+      <p-tabbed-tabs
+        style="border-radius: 0px; border: none"
+        v-if="Object.keys(task).includes('tasks')"
+        :plan="task"
+        :selected="selected"
+        @select-task="$emit('select-task', $event)"
+        @click="$emit('select-task', { value: task.path })"
+      />
+    </t-tab>
+  </t-tabs>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
+
 export default {
   name: 'p-tabbed-tabs',
   data: function () {
     return {
-      activeTab: null // path of active tab task
+      activeTab: null // path of active tab task,
     }
   },
   props: ['plan', 'selected'],
+  components: {
+    't-tab': Tab,
+    't-tabs': Tabs
+  },
   computed: {
     tabs() {
       let result = []

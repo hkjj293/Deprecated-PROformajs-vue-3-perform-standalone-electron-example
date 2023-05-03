@@ -289,7 +289,7 @@ import EnactmentSource from './EnactmentSource.vue'
 import EnactmentExpression from './EnactmentExpression.vue'
 import EnactmentMarkdown from './EnactmentMarkdown.vue'
 import FileSaver from 'file-saver'
-import PopoverButton from './PopoverButton.vue'
+import { PopoverButton } from '@openclinical/proformajs-vue3-tools'
 
 // returns array of dependent data definition names
 // NB this is copy pasted from pfanalyse.  TODO: Refactor this into proforamjs

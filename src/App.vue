@@ -1,4 +1,5 @@
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import { Protocol } from '@openclinical/proformajs'
 import { PerformProtocol } from '@openclinical/proformajs-vue3-perform'
 import { ComposeProtocol } from '@openclinical/proformajs-vue3-compose'
@@ -53,13 +54,16 @@ function checkMeta(protocol) {
 export default {
   components: {
     'p-protocol': PerformProtocol,
-    'c-protocol': ComposeProtocol
+    'c-protocol': ComposeProtocol,
+    't-tab': Tab,
+    't-tabs': Tabs
   },
   data: function () {
     return {
       protocol: new Protocol.Plan(template),
       selectedtask: template.name,
-      initialData: {}
+      initialData: {},
+      tabIndex: 0
     }
   },
   created: function () {
@@ -121,28 +125,16 @@ export default {
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
         <div class="container-fluid">
           <div class="navbar-brand">PRO<em>formajs</em></div>
-          <button
-            type="button"
-            aria-label="Toggle navigation"
-            class="navbar-toggler"
-            aria-expanded="false"
-            aria-controls="nav_collapse"
-            data-bs-toggle="collapse"
-            data-bs-target="#nav_collapse"
-            style="overflow-anchor: none"
-          >
+          <button type="button" aria-label="Toggle navigation" class="navbar-toggler" aria-expanded="false"
+            aria-controls="nav_collapse" data-bs-toggle="collapse" data-bs-target="#nav_collapse"
+            style="overflow-anchor: none">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div id="nav_collapse" class="navbar-collapse collapse" style="justify-content: end">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ml-auto">
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
                   Reset
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -163,68 +155,18 @@ export default {
         </div>
       </nav>
       <div class="container-fluid">
-        <ul class="nav nav-tabs mt-3" id="main-tabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button
-              :class="'nav-link active'"
-              :id="'main-compose'"
-              data-bs-toggle="tab"
-              :data-bs-target="'#main-content-compose'"
-              type="button"
-              role="tab"
-              :aria-controls="'main-content-compose'"
-            >
-              Compose
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              :class="'nav-link' + (!protocol || !protocol.isValid() ? ' disabled' : '')"
-              :id="'main-review'"
-              data-bs-toggle="tab"
-              :data-bs-target="'#main-content-review'"
-              type="button"
-              role="tab"
-              :aria-controls="'main-content-review'"
-            >
-              Perform
-            </button>
-          </li>
-        </ul>
-        <div class="tab-content mt-3">
-          <div
-            :id="'main-content-compose'"
-            :class="'tab-pane active'"
-            role="tabpanel"
-            :aria-labelledby="'main-content-compose'"
-            tabindex="0"
-          >
-            <c-protocol
-              :protocol="protocol"
-              :selectedtask="selectedtask"
-              @change-protocol="updateProtocol"
-              @select-task="updateSelectedTask"
-            />
-          </div>
-          <div
-            :id="'main-content-review'"
-            :class="'tab-pane '"
-            role="tabpanel"
-            :aria-labelledby="'main-content-review'"
-            tabindex="0"
-          >
-            <p-protocol
-              :protocol="protocol"
-              :debug="true"
-              :initialData="startData"
-              :template="
-                protocol && protocol.meta && protocol.meta.enact && protocol.meta.enact.template
-                  ? protocol.meta.enact.template
-                  : 'compact'
-              "
-            />
-          </div>
-        </div>
+        <t-tabs v-model="tabIndex" id="main-tabs">
+          <t-tab title="Compose" id="main-compose">
+            <c-protocol :protocol="protocol" :selectedtask="selectedtask" @change-protocol="updateProtocol"
+              @select-task="updateSelectedTask" />
+          </t-tab>
+          <t-tab title="Perform" :disabled="!protocol || !protocol.isValid()" id="main-perform">
+            <p-protocol :protocol="protocol" :debug="true" :initialData="startData" :template="protocol && protocol.meta && protocol.meta.enact && protocol.meta.enact.template
+                ? protocol.meta.enact.template
+                : 'compact'
+              " />
+          </t-tab>
+        </t-tabs>
       </div>
     </main>
   </div>

@@ -14,238 +14,68 @@ Provides the means to review and edit a PROformajs task's attributes and childre
 
 <template>
   <div>
-    <c-data
-      v-if="dataDefinitionPath"
-      :protocol="protocol"
-      :path="dataDefinitionPath"
-      :issues="subComponentIssues(dataDefinitionPath)"
-      @change-protocol="relayChangeEvent($event, 0)"
-      @select-path="updateDataDefinitionPath"
-      ref="dataDefinitionEditor"
-    />
-    <c-source
-      v-if="sourcePath"
-      :protocol="protocol"
-      :path="sourcePath"
-      @change-protocol="relayChangeEvent($event, 1)"
-      @select-path="updateSourcePath"
-      ref="sourceEditor"
-    />
-    <c-candidate
-      v-if="candidatePath"
-      :protocol="protocol"
-      :path="candidatePath"
-      @change-protocol="relayChangeEvent($event, 2)"
-      @select-path="updateCandidatePath"
-      ref="candidateEditor"
-      :issues="subComponentIssues(candidatePath)"
-    />
+    <c-data v-if="dataDefinitionPath" :protocol="protocol" :path="dataDefinitionPath"
+      :issues="subComponentIssues(dataDefinitionPath)" @change-protocol="relayChangeEvent($event, 0)"
+      @select-path="updateDataDefinitionPath" ref="dataDefinitionEditor" />
+    <c-source v-if="sourcePath" :protocol="protocol" :path="sourcePath" @change-protocol="relayChangeEvent($event, 1)"
+      @select-path="updateSourcePath" ref="sourceEditor" />
+    <c-candidate v-if="candidatePath" :protocol="protocol" :path="candidatePath"
+      @change-protocol="relayChangeEvent($event, 2)" @select-path="updateCandidatePath" ref="candidateEditor"
+      :issues="subComponentIssues(candidatePath)" />
     <div v-show="!dataDefinitionPath && !sourcePath && !candidatePath">
       <h4><c-icon :icon="task.constructor.name" :scale="2" class="mb-1" /> {{ task.name }}</h4>
-      <ul class="nav nav-tabs small" :id="'c-task-tabs'" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button
-            :class="'nav-link ' + (tabIndex == 0 ? 'active' : '')"
-            :id="'c-task-tabs-details'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-task-tabs-details-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-task-tabs-details-p'"
-            :aria-selected="true"
-            @click.prevent="tabIndex = 0"
-          >
-            Details
-          </button>
-        </li>
-        <li class="nav-item" role="presentation" v-if="!task._parent">
-          <button
-            :class="'nav-link ' + (tabIndex == 1 ? 'active' : '')"
-            :id="'c-task-tabs-data'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-task-tabs-data-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-task-tabs-data-p'"
-            :aria-selected="true"
-            @click.prevent="tabIndex = 1"
-          >
-            <span class="d-block d-sm-none">
-              Data
-              <span
-                class="badge rounded-pill text-bg-secondary"
-                v-if="task.dataDefinitions && task.dataDefinitions.length > 0"
-              >
-                {{ task.dataDefinitions.length }}
-              </span>
-            </span>
-            <span class="d-none d-sm-block"
-              >Data Definitions
-              <span
-                class="badge rounded-pill text-bg-secondary"
-                v-if="task.dataDefinitions && task.dataDefinitions.length > 0"
-              >
-                {{ task.dataDefinitions.length }}
-              </span>
-            </span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation" v-if="task.constructor.name == 'Enquiry'">
-          <button
-            :class="'nav-link ' + (tabIndex == 2 ? 'active' : '')"
-            :id="'c-task-tabs-source'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-task-tabs-source-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-task-tabs-source-p'"
-            :aria-selected="true"
-            @click.prevent="tabIndex = 2"
-          >
-            Sources
-            <span
-              class="badge rounded-pill text-bg-secondary"
-              v-if="task.sources && task.sources.length > 0"
-            >
-              {{ task.sources.length }}
-            </span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation" v-if="task.constructor.name == 'Decision'">
-          <button
-            :class="'nav-link ' + (tabIndex == 3 ? 'active' : '')"
-            :id="'c-task-tabs-candidates'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-task-tabs-candidates-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-task-tabs-candidates-p'"
-            :aria-selected="true"
-            @click.prevent="tabIndex = 3"
-          >
-            <span class="d-block d-sm-none">
-              Cands
-              <span
-                class="badge rounded-pill text-bg-secondary"
-                v-if="task.candidates && task.candidates.length > 0"
-              >
-                {{ task.candidates.length }}
-              </span>
-            </span>
-            <span class="d-none d-sm-block">
-              Candidates
-              <span
-                class="badge rounded-pill text-bg-secondary"
-                v-if="task.candidates && task.candidates.length > 0"
-              >
-                {{ task.candidates.length }}
-              </span>
-            </span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button
-            :class="'nav-link ' + (tabIndex == 4 ? 'active' : '')"
-            :id="'c-task-tabs-constraints'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-task-tabs-constraints-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-task-constraints-p'"
-            :aria-selected="true"
-            @click.prevent="tabIndex = 4"
-          >
-            constraints
-          </button>
-        </li>
-      </ul>
-      <div class="tab-content mt-2">
-        <div :class="'tab-pane ' + (tabIndex == 0 ? 'active' : '')" id="c-task-tabs-details-p">
+      <t-tabs small v-model="tabIndex" id="c-task-tabs">
+        <t-tab title="Details" id="c-task-tabs-details" key="details">
           <form>
-            <c-name
-              class="mb-3"
-              :comp="task"
-              @change-attribute="updateAttribute"
-              v-if="protocol.tasks"
-            />
+            <c-name class="mb-3" :comp="task" @change-attribute="updateAttribute" v-if="protocol.tasks" />
             <c-input class="mb-3" att="caption" :comp="task" @change-attribute="updateAttribute" />
-            <c-textarea
-              class="mb-3"
-              att="description"
-              :comp="task"
-              @change-attribute="updateAttribute"
-            />
+            <c-textarea class="mb-3" att="description" :comp="task" @change-attribute="updateAttribute" />
             <div>
-              <c-checkbox
-                class="form-check-inline"
-                :comp="task"
-                :disabled="disableAutonomous"
-                att="autonomous"
-                @change-attribute="updateAttribute"
-              />
-              <c-checkbox
-                class="form-check-inline"
-                v-if="task._parent"
-                :comp="task"
-                att="optional"
-                @change-attribute="updateAttribute"
-              />
-              <c-checkbox
-                class="form-check-inline"
-                :comp="task"
-                :disabled="disableCyclic"
-                att="cyclic"
-                @change-attribute="updateAttribute"
-              />
+              <c-checkbox class="form-check-inline" :comp="task" :disabled="disableAutonomous" att="autonomous"
+                @change-attribute="updateAttribute" />
+              <c-checkbox class="form-check-inline" v-if="task._parent" :comp="task" att="optional"
+                @change-attribute="updateAttribute" />
+              <c-checkbox class="form-check-inline" :comp="task" :disabled="disableCyclic" att="cyclic"
+                @change-attribute="updateAttribute" />
             </div>
-            <button
-              type="button"
-              v-if="task._parent"
-              class="btn btn-outline-danger btn-sm d-block float-end"
-              @click="deleteTask"
-            >
+            <button type="button" v-if="task._parent" class="btn btn-outline-danger btn-sm d-block float-end"
+              @click="deleteTask">
               Delete
             </button>
           </form>
           <ul class="list-unstyled">
-            <li
-              v-for="(issue, idx) in issues"
-              :key="idx"
-              v-bind:class="{
+            <li v-for="(issue, idx) in issues" :key="idx" v-bind:class="{
                 'text-danger': issue.type == 'Error',
                 'text-info': issue.type == 'Warning'
-              }"
-            >
-              <font-awesome-icon
-                :icon="issue.type == 'Warning' ? 'info-circle' : 'exclamation-triangle'"
-              />
-              <span
-                v-if="issue.path != path"
-                class="clickable text-primary"
-                @click="selectTask(issue.path)"
-                >{{ localPath(issue) }}:</span
-              >
+              }">
+              <font-awesome-icon :icon="issue.type == 'Warning' ? 'info-circle' : 'exclamation-triangle'" />
+              <span v-if="issue.path != path" class="clickable text-primary" @click="selectTask(issue.path)">{{
+                localPath(issue) }}:</span>
               {{ issue.msg
               }}<span v-if="issue.attribute && issue.msg.indexOf(issue.attribute) == -1">
-                ({{ issue.attribute }})</span
-              >
+                ({{ issue.attribute }})</span>
             </li>
           </ul>
-        </div>
-        <div
-          :class="'tab-pane ' + (tabIndex == 1 ? 'active' : '')"
-          id="c-task-tabs-data-p"
-          v-if="!task._parent"
-        >
+        </t-tab>
+        <t-tab id="c-task-tabs-data" key="data" v-if="!task._parent">
+          <template #title>
+            <span class="d-block d-sm-none">
+              Data
+              <span class="badge rounded-pill text-bg-secondary"
+                v-if="task.dataDefinitions && task.dataDefinitions.length > 0">
+                {{ task.dataDefinitions.length }}
+              </span>
+            </span>
+            <span class="d-none d-sm-block">Data Definitions
+              <span class="badge rounded-pill text-bg-secondary"
+                v-if="task.dataDefinitions && task.dataDefinitions.length > 0">
+                {{ task.dataDefinitions.length }}
+              </span>
+            </span>
+          </template>
           <div class="row">
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              id="newcdatadef"
-              @change="handleDDText"
-              placeholder="Enter data definition name"
-              autocapitalize="off"
-            />
+            <input type="text" class="form-control form-control-sm" id="newcdatadef" @change="handleDDText"
+              placeholder="Enter data definition name" autocapitalize="off" />
             <table class="table table-sm mt-2" v-if="task.dataDefinitions.length > 0">
               <tbody>
                 <tr v-for="(def, idx) in dataDefinitions" :key="idx">
@@ -254,25 +84,13 @@ Provides the means to review and edit a PROformajs task's attributes and childre
                     <span class="badge rounded-pill text-bg-secondary">{{
                       def.constructor.name
                     }}</span>
-                    <span class="badge rounded-pill text-bg-secondary" v-if="def.multiValued"
-                      >Multi-valued</span
-                    >
-                    <span class="badge rounded-pill text-bg-secondary" v-if="def.range"
-                      >Ranged</span
-                    >
-                    <span class="badge rounded-pill text-bg-secondary" v-if="def.valueCondition"
-                      >Dynamic</span
-                    >
-                    <span class="badge rounded-pill text-bg-secondary" v-if="def.defaultValue"
-                      >Default value</span
-                    >
+                    <span class="badge rounded-pill text-bg-secondary" v-if="def.multiValued">Multi-valued</span>
+                    <span class="badge rounded-pill text-bg-secondary" v-if="def.range">Ranged</span>
+                    <span class="badge rounded-pill text-bg-secondary" v-if="def.valueCondition">Dynamic</span>
+                    <span class="badge rounded-pill text-bg-secondary" v-if="def.defaultValue">Default value</span>
                   </td>
                   <td>
-                    <button
-                      type="button"
-                      class="btn btn-light btn-sm float-sm-end"
-                      @click="deleteDef(idx)"
-                    >
+                    <button type="button" class="btn btn-light btn-sm float-sm-end" @click="deleteDef(idx)">
                       &times;
                     </button>
                   </td>
@@ -280,12 +98,14 @@ Provides the means to review and edit a PROformajs task's attributes and childre
               </tbody>
             </table>
           </div>
-        </div>
-        <div
-          :class="'tab-pane ' + (tabIndex == 2 ? 'active' : '')"
-          id="c-task-tabs-source-p"
-          v-if="task.constructor.name == 'Enquiry'"
-        >
+        </t-tab>
+        <t-tab id="c-task-tabs-source" key="source" v-if="task.constructor.name == 'Enquiry'">
+          <template #title>
+            Sources
+            <span class="badge rounded-pill text-bg-secondary" v-if="task.sources && task.sources.length > 0">
+              {{ task.sources.length }}
+            </span>
+          </template>
           <form>
             <template v-if="sourceDataDefs().length > 0">
               <template v-if="availableDataDefs().length > 0">
@@ -298,12 +118,8 @@ Provides the means to review and edit a PROformajs task's attributes and childre
                     </select>
                   </div>
                   <div class="col">
-                    <button
-                      type="button"
-                      class="btn btn-outline-secondary btn-sm d-block float-sm-end"
-                      @click="addSource"
-                      block
-                    >
+                    <button type="button" class="btn btn-outline-secondary btn-sm d-block float-sm-end" @click="addSource"
+                      block>
                       New Source
                     </button>
                   </div>
@@ -321,11 +137,7 @@ Provides the means to review and edit a PROformajs task's attributes and childre
                       {{ renderCondition(src) }}
                     </td>
                     <td>
-                      <button
-                        type="button"
-                        class="btn btn-light btn-sm float-sm-end"
-                        @click="deleteSource(idx)"
-                      >
+                      <button type="button" class="btn btn-light btn-sm float-sm-end" @click="deleteSource(idx)">
                         &times;
                       </button>
                     </td>
@@ -338,21 +150,25 @@ Provides the means to review and edit a PROformajs task's attributes and childre
               to source it in this enquiry.
             </p>
           </form>
-        </div>
-        <div
-          :class="'tab-pane ' + (tabIndex == 3 ? 'active' : '')"
-          id="c-task-tabs-candidates-p"
-          v-if="task.constructor.name == 'Decision'"
-        >
+        </t-tab>
+        <t-tab id="c-task-tabs-candidates" key="candidates" v-if="task.constructor.name == 'Decision'">
+          <template #title>
+            <span class="d-block d-sm-none">
+              Cands
+              <span class="badge rounded-pill text-bg-secondary" v-if="task.candidates && task.candidates.length > 0">
+                {{ task.candidates.length }}
+              </span>
+            </span>
+            <span class="d-none d-sm-block">
+              Candidates
+              <span class="badge rounded-pill text-bg-secondary" v-if="task.candidates && task.candidates.length > 0">
+                {{ task.candidates.length }}
+              </span>
+            </span>
+          </template>
           <div class="row">
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              id="newcandidate"
-              @change="addCandidate"
-              placeholder="Enter candidate name"
-              autocapitalize="off"
-            />
+            <input type="text" class="form-control form-control-sm" id="newcandidate" @change="addCandidate"
+              placeholder="Enter candidate name" autocapitalize="off" />
             <table class="table table-sm mt-2" v-show="task.candidates.length > 0">
               <tbody>
                 <!-- existing candidates -->
@@ -368,11 +184,7 @@ Provides the means to review and edit a PROformajs task's attributes and childre
                     </span>
                   </td>
                   <td>
-                    <button
-                      type="button"
-                      class="btn btn-light btn-sm float-sm-end"
-                      @click="deleteCandidate(idx)"
-                    >
+                    <button type="button" class="btn btn-light btn-sm float-sm-end" @click="deleteCandidate(idx)">
                       &times;
                     </button>
                   </td>
@@ -380,38 +192,25 @@ Provides the means to review and edit a PROformajs task's attributes and childre
               </tbody>
             </table>
           </div>
-        </div>
-        <div :class="'tab-pane ' + (tabIndex == 4 ? 'active' : '')" id="c-task-tabs-constraints-p">
+        </t-tab>
+        <t-tab id="c-task-tabs-constraints" title="Constraints" key="constraints">
           <form>
-            <c-nt-condition
-              att="waitCondition"
-              :comp="task"
-              @change-attribute="updateAttribute"
-              :issues="attributeIssues('waitCondition')"
-            />
-            <c-nt-condition
-              att="preCondition"
-              :comp="task"
-              @change-attribute="updateAttribute"
-              :issues="attributeIssues('preCondition')"
-            />
+            <c-nt-condition att="waitCondition" :comp="task" @change-attribute="updateAttribute"
+              :issues="attributeIssues('waitCondition')" />
+            <c-nt-condition att="preCondition" :comp="task" @change-attribute="updateAttribute"
+              :issues="attributeIssues('preCondition')" />
             <c-input att="eventTrigger" :comp="task" @change-attribute="updateAttribute" />
-            <c-condition
-              att="cycleUntil"
-              :comp="task"
-              @change-attribute="updateAttribute"
-              :disabled="!task.cyclic"
-              description="e.g. index()==2"
-              :issues="attributeIssues('cycleCondition')"
-            />
+            <c-condition att="cycleUntil" :comp="task" @change-attribute="updateAttribute" :disabled="!task.cyclic"
+              description="e.g. index()==2" :issues="attributeIssues('cycleCondition')" />
           </form>
-        </div>
-      </div>
+        </t-tab>
+      </t-tabs>
     </div>
   </div>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import { Protocol } from '@openclinical/proformajs'
 import ComposeData from './ComposeData.vue'
 import ComposeSource from './ComposeSource.vue'
@@ -444,7 +243,9 @@ export default {
     'c-condition': ComposeCondition,
     'c-nt-condition': ComposeNonTemporalCondition,
     'c-checkbox': ComposeCheckbox,
-    'c-icon': ComposeIcon
+    'c-icon': ComposeIcon,
+    't-tabs': Tabs,
+    't-tab': Tab
   },
   data() {
     return {
@@ -659,7 +460,11 @@ export default {
     },
     updateCandidatePath(evt) {
       this.candidatePath = evt.value
-      this.tabIndex = 3
+      if (this.task.candidates && this.task._parent) {
+        this.tabIndex = 1 // show Candidates for decision in plan
+      } else {
+        this.tabIndex = 2 // for standalone decision
+      }
     },
     selectCandidate(idx) {
       let candidate = this.task.candidates[idx]

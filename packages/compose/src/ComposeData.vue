@@ -43,64 +43,12 @@ Provides the means to review and edit a PROformajs data definition's attributes 
         Next &gt;
       </button>
     </div>
-    <ul
-      class="nav nav-tabs small"
-      :id="
-        'c-arg-tabs-' + (this.def && this.def.name ? this.def.name.replaceAll(':', '-') : 'no-name')
-      "
-      role="tablist"
+    <t-tabs
+      small
+      v-model="tabIndex"
+      :id="'c-data-tabs-' + (this.path ? this.path.replaceAll(':', '-') : 'no-name')"
     >
-      <li class="nav-item" role="presentation">
-        <button
-          :class="'nav-link ' + (tabIndex == 0 ? 'active' : '')"
-          :id="'c-data-tabs-details'"
-          data-bs-toggle="tab"
-          :data-bs-target="'#c-data-tabs-details-p'"
-          type="button"
-          role="tab"
-          :aria-controls="'c-data-tabs-details-p'"
-          :aria-selected="true"
-        >
-          Details
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          :class="'nav-link ' + (tabIndex == 1 ? 'active' : '')"
-          :id="'c-data-tabs-value'"
-          data-bs-toggle="tab"
-          :data-bs-target="'#c-data-tabs-value-p'"
-          type="button"
-          role="tab"
-          :aria-controls="'c-data-tabs-value-p'"
-          :aria-selected="true"
-        >
-          Value
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          :class="'nav-link ' + (tabIndex == 2 ? 'active' : '')"
-          :id="'c-data-tabs-range'"
-          data-bs-toggle="tab"
-          :data-bs-target="'#c-data-tabs-range-p'"
-          type="button"
-          role="tab"
-          :aria-controls="'c-data-tabs-range-p'"
-          :aria-selected="true"
-        >
-          Range
-          <span
-            class="badge rounded-pill text-bg-secondary"
-            v-if="def.range && def.range.length > 0"
-          >
-            {{ def.range.length }}
-          </span>
-        </button>
-      </li>
-    </ul>
-    <div class="tab-content mt-2">
-      <div :class="'tab-pane ' + (tabIndex == 0 ? 'active' : '')" id="c-data-tabs-details-p">
+      <t-tab title="Details" key="details" id="c-data-tabs-details">
         <form>
           <c-name :comp="def" @change-attribute="updateAttribute" />
           <c-input att="caption" :comp="def" @change-attribute="updateAttribute" />
@@ -131,8 +79,8 @@ Provides the means to review and edit a PROformajs data definition's attributes 
             </div>
           </div>
         </form>
-      </div>
-      <div :class="'tab-pane ' + (tabIndex == 1 ? 'active' : '')" id="c-data-tabs-value-p">
+      </t-tab>
+      <t-tab title="Value" key="value" id="c-data-tabs-value">
         <form>
           <c-checkbox att="multiValued" :comp="def" @change-attribute="updateAttribute" />
           <c-input att="defaultValue" :comp="def" @change-attribute="updateAttribute" />
@@ -144,8 +92,17 @@ Provides the means to review and edit a PROformajs data definition's attributes 
             :description="valueConditionExample"
           />
         </form>
-      </div>
-      <div :class="'tab-pane ' + (tabIndex == 2 ? 'active' : '')" id="c-data-tabs-range-p">
+      </t-tab>
+      <t-tab key="range" id="c-data-tabs-range">
+        <template #title>
+          Range
+          <span
+            class="badge rounded-pill text-bg-secondary"
+            v-if="def.range && def.range.length > 0"
+          >
+            {{ def.range.length }}
+          </span>
+        </template>
         <div class="row ml-1 mb-2" v-if="!def.range || (def.range && def.range.length == 0)">
           <label for="rangeAnnotated" class="col-form-label col-form-label-sm pt-0">
             Data type
@@ -294,12 +251,13 @@ Provides the means to review and edit a PROformajs data definition's attributes 
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
+      </t-tab>
+    </t-tabs>
   </div>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import { Protocol } from '@openclinical/proformajs'
 import ComposeName from './ComposeName.vue'
 import ComposeInput from './ComposeInput.vue'
@@ -319,7 +277,9 @@ export default {
     'c-input': ComposeInput,
     'c-textarea': ComposeTextArea,
     'c-checkbox': ComposeCheckbox,
-    'c-condition': ComposeCondition
+    'c-condition': ComposeCondition,
+    't-tab': Tab,
+    't-tabs': Tabs
   },
   data() {
     return {

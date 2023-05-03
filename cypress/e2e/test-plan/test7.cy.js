@@ -82,17 +82,18 @@ describe('Test 7', () => {
         cy.click_button_with_content('Recommend')
         cy.get('input#recommendCondition').type('{selectAll}{backspace}net_support("grant")>1{enter}')
         cy.click_button_with_content('Next >')
+        cy.click_button_with_content('Recommend')
         cy.get('input#recommendCondition').type('{selectAll}{backspace}net_support("grant")<=1{enter}')
     }
 
     function add_actions() {
         cy.drag_and_drop_svg('g#taskbar > g[data-clazz="Action"] > text.grabbable', 0.75, 0.25)
         cy.get('div#c-task-tabs-details-p').find('input#name').type('{selectAll}{backspace}granted{enter}')
-        cy.click_button_with_content('constraints')
+        cy.click_button_with_content('Constraints')
         cy.get('input#preCondition').type("result_of('decide') == 'grant'{enter}")
         cy.drag_and_drop_svg('g#taskbar > g[data-clazz="Action"] > text.grabbable', 0.75, 0.75)
         cy.get('div#c-task-tabs-details-p').find('input#name').type('{selectAll}{backspace}denied{enter}')
-        cy.click_button_with_content('constraints')
+        cy.click_button_with_content('Constraints')
         cy.get('input#preCondition').type("result_of('decide') == 'deny'{enter}")
     }
 

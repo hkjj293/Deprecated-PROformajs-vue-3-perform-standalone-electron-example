@@ -33,6 +33,7 @@ describe('Test 6', () => {
         cy.click_button_with_content('Recommend')
         cy.get('input#recommendCondition').type('{selectAll}{backspace}age>=18{enter}')
         cy.click_button_with_content('Next >')
+        cy.click_button_with_content('Recommend')
         cy.get('input#recommendCondition').type('{selectAll}{backspace}age<18{enter}')
         cy.click_button_with_content('Decision: decisionB')
         cy.click_button_with_content('Details')
