@@ -26,9 +26,6 @@ Provides a UI for a proformajs Enactment.
             >
               <font-awesome-icon icon="redo-alt" /> Restart
             </button>
-            <!-- <b-button id="task-settings" href="#" tabindex="0" class="btn btn-outline-secondary ms-1"> -->
-            <!-- <font-awesome-icon icon="cog" /> -->
-            <!-- </b-button>  -->
             <p-settings
               :id="'popover-reivew'"
               class="d-none d-sm-inline ms-1"
@@ -39,31 +36,6 @@ Provides a UI for a proformajs Enactment.
               @restart-enactment="$emit('restart-enactment')"
             />
           </div>
-          <!-- <b-popover target=" task-settings" placement="left" title="Review Settings" triggers="focus"> -->
-          <!-- <label v-if="debug"><input type='checkbox' :checked="options.debug" -->
-          <!-- @click="$emit('change-option', { option: 'debug', value: !options.debug })" /> Debug expressions</label> -->
-          <!-- <div class="font-weight-bold pb-2">Decisions</div> -->
-          <!-- <label><input type='checkbox' :checked="options.Decision.showInactiveArguments" -->
-          <!-- @click="$emit('change-option', { category: 'Decision', option: 'showInactiveArguments', value: !options.Decision.showInactiveArguments })" /> -->
-          <!-- Show inactive arguments</label> -->
-          <!-- <label><input type='checkbox' :checked="options.Decision.showExpressions" -->
-          <!-- @click="$emit('change-option', { category: 'Decision', option: 'showExpressions', value: !options.Decision.showExpressions })" /> -->
-          <!-- Show expressions</label> -->
-          <!--  <label><input type='checkbox' :checked="options.Candidate.autoConfirmRecommended" -->
-          <!-- @click="$emit('change-option', { category: 'Candidate', option: 'autoConfirmRecommended', value: !options.Candidate.autoConfirmRecommended })" /> -->
-          <!-- Auto-confirm candidates</label> -->
-          <!-- <label><input type='checkbox' :checked="options.Decision.allowDownloads" -->
-          <!-- @click="$emit('change-option', { category: 'Decision', option: 'allowDownloads', value: !options.Decision.allowDownloads })" /> -->
-          <!-- Allow Downloads</label> -->
-          <!-- <div class="font-weight-bold pb-2">Enquiries</div> -->
-          <!-- <label><input type='checkbox' :checked="options.Enquiry.useDefaults" -->
-          <!-- @click="$emit('change-option', { category: 'Enquiry', option: 'useDefaults', value: !options.Enquiry.useDefaults })" /> -->
-          <!-- Use defaults</label> -->
-          <!-- <b-btn variant="outline-secondary" size="sm" @click="$emit('restart-enactment')" class="d-block d-sm-none" -->
-          <!-- block> -->
-          <!-- <font-awesome-icon icon="redo-alt" /> Restart -->
-          <!-- </b-btn> -->
-          <!-- </b-popover> -->
           <h3>
             {{ enactment ? enactment.protocol.caption || enactment.protocol.name : '' }}
             <span class="badge text-bg-warning" v-show="status.finished">Completed</span>
@@ -94,9 +66,6 @@ Provides a UI for a proformajs Enactment.
             >
               <font-awesome-icon icon="redo-alt" /> Restart
             </button>
-            <!-- <b-button id="task-settings" variant="outline-secondary" href="#" tabindex="0"> -->
-            <!-- <font-awesome-icon icon="cog" /> -->
-            <!-- </b-button> -->
             <p-settings
               :id="'popover-reivew'"
               :options="options"
@@ -124,98 +93,21 @@ Provides a UI for a proformajs Enactment.
       <div class="col-md-6 order-md-1">
         <!-- enactment status tabs -->
         <div>
-          <ul class="nav nav-tabs" id="debug-review-tabs" role="tablist">
-            <li class="nav-item" role="presentation" v-if="enactment.protocol.tasks">
-              <button
-                class="nav-link active"
-                id="debug-review-map-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#debug-review-map"
-                type="button"
-                role="tab"
-                aria-controls="debug-review-map-tab-pane"
-                aria-selected="true"
-              >
-                Map <font-awesome-icon icon="directions" />
-              </button>
-            </li>
-            <li
-              class="nav-item"
-              role="presentation"
-              v-if="enactment.getDataDefinitions().length > 0"
-            >
-              <button
-                class="nav-link"
-                id="debug-review-data-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#debug-review-data"
-                type="button"
-                role="tab"
-                aria-controls="debug-review-data-tab-pane"
-                aria-selected="false"
-              >
-                Data <font-awesome-icon icon="table" />
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="debug-review-select-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#debug-review-select"
-                type="button"
-                role="tab"
-                aria-controls="debug-review-select-tab-pane"
-                aria-selected="false"
-              >
-                Select <font-awesome-icon icon="hand-pointer" />
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="debug-review-history-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#debug-review-history"
-                type="button"
-                role="tab"
-                aria-controls="debug-review-history-tab-pane"
-                aria-selected="false"
-              >
-                History <font-awesome-icon icon="history" />
-              </button>
-            </li>
-          </ul>
-          <div class="tab-content mt-3">
-            <div
-              id="debug-review-map"
-              class="tab-pane active"
-              role="tabpanel"
-              aria-labelledby="debug-review-map-tab-pane"
-              tabindex="0"
-            >
+          <t-tabs small v-model="tabIndex" id="debug-review-tabs">
+            <t-tab key="map" id="debug-review-map-tab">
+              <template #title>Map <font-awesome-icon icon="directions" /></template>
               <p-map :enactment="enactment" :selectedtask="path" @select-task="updatePath" />
-            </div>
-            <div
-              id="debug-review-data"
-              class="tab-pane"
-              role="tabpanel"
-              aria-labelledby="debug-review-data-tab-pane"
-              tabindex="0"
-            >
+            </t-tab>
+            <t-tab key="data" id="debug-review-data-tab">
+              <template #title>Data <font-awesome-icon icon="table" /></template>
               <p-data
                 :enactment="enactment"
                 @update-enactment="updateEnactment"
                 :options="options"
               />
-            </div>
-            <div
-              id="debug-review-select"
-              class="tab-pane"
-              role="tabpanel"
-              aria-labelledby="debug-review-select-tab-pane"
-              tabindex="0"
-            >
+            </t-tab>
+            <t-tab key="select" id="debug-review-select-tab">
+              <template #title>Select <font-awesome-icon icon="hand-pointer" /></template>
               <div class="row">
                 <div class="col-sm-6">
                   <div>
@@ -272,17 +164,12 @@ Provides a UI for a proformajs Enactment.
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              id="debug-review-history"
-              class="tab-pane"
-              role="tabpanel"
-              aria-labelledby="debug-review-history-tab-pane"
-              tabindex="0"
-            >
+            </t-tab>
+            <t-tab key="history" id="debug-review-history-tab">
+              <template #title>History <font-awesome-icon icon="history" /></template>
               <p-history :enactment="enactment" />
-            </div>
-          </div>
+            </t-tab>
+          </t-tabs>
         </div>
       </div>
     </div>
@@ -291,10 +178,20 @@ Provides a UI for a proformajs Enactment.
 
 <script>
 import { EnactmentMixin } from './perform'
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 
 export default {
   mixins: [EnactmentMixin],
+  components: {
+    't-tab': Tab,
+    't-tabs': Tabs
+  },
   emits: ['change-option'],
+  data() {
+    return {
+      tabIndex: 0
+    }
+  },
   methods: {
     OnUpdateOptions(opts) {
       this.$emit('change-option', opts)

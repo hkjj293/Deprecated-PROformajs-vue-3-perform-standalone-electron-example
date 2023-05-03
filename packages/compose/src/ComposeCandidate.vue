@@ -52,39 +52,18 @@ Provides the means to review and edit a PROformajs candidates's attributes and c
           Next &gt;
         </button>
       </div>
-      <ul
-        class="nav nav-tabs small"
-        :id="
-          'c-arg-tabs-' +
-          (this.plan && this.plan.name ? this.plan.name.replaceAll(':', '-') : 'no-name')
-        "
-        role="tablist"
+      <t-tabs
+        small
+        v-model="tabIndex"
+        :id="'c-cand-tabs-' + (this.path ? this.path.replaceAll(':', '-') : 'no-name')"
       >
-        <li class="nav-item" role="presentation">
-          <button
-            :class="'nav-link ' + (tabIndex == 0 ? 'active' : '')"
-            :id="'c-cand-tabs-details'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-cand-tabs-details-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-cand-tabs-details-p'"
-            :aria-selected="true"
-          >
-            Details
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button
-            :class="'nav-link ' + (tabIndex == 1 ? 'active' : '')"
-            :id="'c-cand-tabs-argument'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-cand-tabs-argument-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-cand-tabs-argument-p'"
-            :aria-selected="true"
-          >
+        <t-tab title="Details" key="details" id="c-cand-tabs-details">
+          <c-name :comp="candidate" @change-attribute="updateAttribute" />
+          <c-input att="caption" :comp="candidate" @change-attribute="updateAttribute" />
+          <c-textarea att="description" :comp="candidate" @change-attribute="updateAttribute" />
+        </t-tab>
+        <t-tab key="arguments" id="c-cand-tabs-arguments">
+          <template #title>
             <span class="d-block d-sm-none">
               Args
               <span
@@ -101,30 +80,7 @@ Provides the means to review and edit a PROformajs candidates's attributes and c
                 >{{ candidate.arguments.length }}</span
               >
             </span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button
-            :class="'nav-link ' + (tabIndex == 2 ? 'active' : '')"
-            :id="'c-cand-tabs-recommend'"
-            data-bs-toggle="tab"
-            :data-bs-target="'#c-cand-tabs-recommend-p'"
-            type="button"
-            role="tab"
-            :aria-controls="'c-cand-tabs-recommend-p'"
-            :aria-selected="true"
-          >
-            Recommend
-          </button>
-        </li>
-      </ul>
-      <div class="tab-content mt-2">
-        <div class="tab-pane active" id="c-cand-tabs-details-p">
-          <c-name :comp="candidate" @change-attribute="updateAttribute" />
-          <c-input att="caption" :comp="candidate" @change-attribute="updateAttribute" />
-          <c-textarea att="description" :comp="candidate" @change-attribute="updateAttribute" />
-        </div>
-        <div class="tab-pane" id="c-cand-tabs-argument-p">
+          </template>
           <div>
             <input
               type="text"
@@ -156,8 +112,8 @@ Provides the means to review and edit a PROformajs candidates's attributes and c
               </tbody>
             </table>
           </div>
-        </div>
-        <div class="tab-pane" id="c-cand-tabs-recommend-p">
+        </t-tab>
+        <t-tab title="Recommend" key="recommend" id="c-cand-tabs-recommend">
           <c-condition
             att="recommendCondition"
             :comp="candidate"
@@ -165,13 +121,14 @@ Provides the means to review and edit a PROformajs candidates's attributes and c
             @change-attribute="updateAttribute"
             :issues="attributeIssues('recommendCondition')"
           />
-        </div>
-      </div>
+        </t-tab>
+      </t-tabs>
     </div>
   </div>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import { Protocol } from '@openclinical/proformajs'
 import ComposeArgument from './ComposeArgument.vue'
 import ComposeCondition from './ComposeCondition.vue'
@@ -191,7 +148,9 @@ export default {
     'c-name': ComposeName,
     'c-input': ComposeInput,
     'c-textarea': ComposeTextArea,
-    'c-condition': ComposeCondition
+    'c-condition': ComposeCondition,
+    't-tab': Tab,
+    't-tabs': Tabs
   },
   data() {
     return {

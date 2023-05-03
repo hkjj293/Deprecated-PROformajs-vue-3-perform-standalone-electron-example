@@ -13,7 +13,7 @@ describe('Test 9', () => {
         cy.drag_and_drop_svg('g#taskbar > g[data-clazz="Action"] > text.grabbable')
         cy.get('input#cyclic', { timeout: 10000 }).check()
         cy.get('input#caption').type("{selectAll}{del}Task A ${{}index('plan:actionA')}.")
-        cy.click_button_with_content('constraints')
+        cy.click_button_with_content('Constraints')
         cy.get('input#cycleUntil').type("index('plan:actionA')==2{enter}")
         cy.click_button_with_content('Perform')
         cy.get('span').contains('Task A 0.')

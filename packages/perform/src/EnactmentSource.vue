@@ -230,7 +230,7 @@ Just about works.  Current coverage shown below.
 <script>
 import moment from 'moment'
 import { nextTick } from 'vue'
-import PopoverButton from './PopoverButton.vue'
+import { PopoverButton } from '@openclinical/proformajs-vue3-tools'
 import EnactmentMarkdown from './EnactmentMarkdown.vue'
 
 export default {

@@ -9,16 +9,8 @@ we dont want that, hence the handling of the click event.
 </docs>
 
 <template>
-  <button
-    type="button"
-    data-bs-toggle="popover"
-    :data-bs-trigger="trigger"
-    :data-bs-placement="placement"
-    :data-bs-html="html"
-    :data-bs-title="title ? title : null"
-    :data-bs-content="renderedContent"
-    :class="classes"
-  >
+  <button type="button" data-bs-toggle="popover" :data-bs-trigger="trigger" :data-bs-placement="placement"
+    :data-bs-html="html" :data-bs-title="title ? title : null" :data-bs-content="renderedContent" :class="classes">
     <slot>
       <font-awesome-icon icon="info-circle" />
     </slot>
@@ -26,7 +18,7 @@ we dont want that, hence the handling of the click event.
 </template>
 
 <script>
-import { Popover } from 'bootstrap'
+//import { Popover } from 'bootstrap'
 
 export default {
   name: 'PopoverButton',
@@ -74,7 +66,7 @@ export default {
   },
   mounted() {
     this.onClick.bind(this)
-    this.popover = new Popover(this.$el, { sanitize: false })
+    this.popover = new window.bootstrap.Popover(this.$el, { sanitize: false })
     if (this.target && document.getElementById(this.target)) {
       this.renderedContent = document.getElementById(this.target)
       this.renderedContent.parentElement.removeChild(this.renderedContent)

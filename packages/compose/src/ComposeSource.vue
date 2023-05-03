@@ -41,31 +41,12 @@ Provides the means to review and edit a PROformajs source details
         Next &gt;
       </button>
     </div>
-    <ul
-      class="nav nav-tabs small"
-      :id="
-        'c-source-tabs-' +
-        (this.plan && this.plan.name ? this.plan.name.replaceAll(':', '-') : 'no-name')
-      "
-      role="tablist"
+    <t-tabs
+      small
+      v-model="tabindex"
+      :id="'c-source-tabs-' + (this.path ? this.path.replaceAll(':', '-') : 'no-name')"
     >
-      <li class="nav-item" role="presentation">
-        <button
-          :class="'nav-link active'"
-          :id="'c-source-tabs'"
-          data-bs-toggle="tab"
-          :data-bs-target="'#c-source-tabs-content'"
-          type="button"
-          role="tab"
-          :aria-controls="'c-source-tabs-content'"
-          :aria-selected="true"
-        >
-          Details
-        </button>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" role="tabpanel" tabindex="0" id="c-source-tabs-content">
+      <t-tab title="Details" key="details" id="c-source-tabs-content">
         <div class="alert alert-info" v-if="custom">
           Custom requestCondition detected. Please refer to the code view.
         </div>
@@ -123,12 +104,13 @@ Provides the means to review and edit a PROformajs source details
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </t-tab>
+    </t-tabs>
   </div>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 // for use in RequestCondition
 const cls1 = /!is_known\('(\w+)'\)/
 const cls2 =
@@ -182,12 +164,17 @@ export default {
     protocol: Object,
     path: String
   },
+  components: {
+    't-tab': Tab,
+    't-tabs': Tabs
+  },
   emits: ['change-protocol', 'select-path'],
   data() {
     return {
       timeUnit: 'hours',
       timeUnits: 24,
-      expressionTester: null
+      expressionTester: null,
+      tabindex: 0
     }
   },
   computed: {

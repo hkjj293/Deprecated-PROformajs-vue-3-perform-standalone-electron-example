@@ -96,7 +96,7 @@ Provides a UI settings button that opens a popover form.
 </template>
 
 <script>
-import PopoverButton from './PopoverButton.vue'
+import { PopoverButton } from '@openclinical/proformajs-vue3-tools'
 
 export default {
   props: {

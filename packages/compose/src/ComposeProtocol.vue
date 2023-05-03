@@ -18,49 +18,27 @@ that can be used to edit a PROformajs protocol:
 
 <template>
   <div @input="focusAce">
-    <div class="tab-content mt-2">
-      <div class="tab-pane active" id="c-tabs-editor-p">
+    <t-tabs small v-model="tabIndex" id="c-tabs" top pills>
+      <t-tab id="c-tabs-editor" key="editor" title="Editor">
         <div class="row">
           <div v-bind:class="{ 'col-sm-8': protocol.tasks, 'col-sm-5': !protocol.tasks }">
-            <c-map
-              :protocol="protocol"
-              :selectedtask="selectedtask"
-              @select-task="$emit('select-task', $event)"
-              @delete-task="modal.show()"
-              :issues="allIssues"
-            />
+            <c-map :protocol="protocol" :selectedtask="selectedtask" @select-task="$emit('select-task', $event)"
+              @delete-task="modal.show()" :issues="allIssues" />
           </div>
           <div v-bind:class="{ 'col-sm-4': protocol.tasks, 'col-sm-7': !protocol.tasks }">
-            <c-task
-              ref="taskEditor"
-              :protocol="protocol"
-              :path="selectedtask"
-              :issues="selectedTaskIssues"
-              @change-protocol="relayChangeEvent($event, 1)"
-              @delete-task="modal.show()"
-              @select-task="$emit('select-task', $event)"
-            />
+            <c-task ref="taskEditor" :protocol="protocol" :path="selectedtask" :issues="selectedTaskIssues"
+              @change-protocol="relayChangeEvent($event, 1)" @delete-task="modal.show()"
+              @select-task="$emit('select-task', $event)" />
           </div>
         </div>
         <!-- Modal Component -->
-        <div
-          ref="deleteTaskModal"
-          class="modal fade"
-          id="c-modal"
-          tabindex="-1"
-          aria-labelledby="c-modal-label"
-          aria-hidden="true"
-        >
+        <div ref="deleteTaskModal" class="modal fade" id="c-modal" tabindex="-1" aria-labelledby="c-modal-label"
+          aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" id="c-modal-label">Remove task</h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <p class="my-4">Are you sure you wish to remove this task?</p>
@@ -69,81 +47,38 @@ that can be used to edit a PROformajs protocol:
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   Cancel
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  @click.prevent="deleteTask"
-                >
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click.prevent="deleteTask">
                   OK
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="tab-pane" id="c-tabs-code-p">
+      </t-tab>
+      <t-tab id="c-tabs-code" key="code" title="Code">
         <div class="row">
           <div class="col-sm-4">
-            <c-tree
-              :protocol="protocol"
-              :selectedtask="selectedtask"
-              @select-task="$emit('select-task', $event)"
-            />
+            <c-tree :protocol="protocol" :selectedtask="selectedtask" @select-task="$emit('select-task', $event)" />
           </div>
           <div class="col-sm-8">
-            <c-code
-              ref="code"
-              :protocol="protocol"
-              :selectedtask="selectedtask"
-              @change-protocol="relayChangeEvent($event, 2)"
-            />
+            <c-code ref="code" :protocol="protocol" :selectedtask="selectedtask"
+              @change-protocol="relayChangeEvent($event, 2)" />
           </div>
         </div>
-      </div>
-    </div>
-
-    <ul class="nav nav-pills" :id="'c-tabs'" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link active"
-          id="c-tabs-editor"
-          data-bs-toggle="pill"
-          data-bs-target="#c-tabs-editor-p"
-          type="button"
-          role="tab"
-          aria-controls="c-tabs-editor-p"
-          aria-selected="true"
-        >
-          Editor
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          id="c-tabs-code"
-          data-bs-toggle="pill"
-          data-bs-target="#c-tabs-code-p"
-          type="button"
-          role="tab"
-          aria-controls="c-tabs-code-p"
-          aria-selected="true"
-        >
-          Code
-        </button>
-      </li>
-    </ul>
+      </t-tab>
+    </t-tabs>
   </div>
 </template>
 
 <script>
+import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import ComposeMap from './ComposeMap.vue'
 import ComposeTask from './ComposeTask.vue'
 import ComposeTree from './ComposeTree.vue'
 import ComposeCode from './ComposeCode.vue'
 import { Protocol } from '@openclinical/proformajs'
 import { TemporalConstraintMixin } from '@openclinical/proformajs-vue3-map'
-import { Modal } from 'bootstrap'
+//import { Modal } from 'bootstrap'
 
 export default {
   name: 'c-compose',
@@ -154,16 +89,19 @@ export default {
     'c-code': ComposeCode,
     'c-task': ComposeTask,
     'c-map': ComposeMap,
-    'c-tree': ComposeTree
+    'c-tree': ComposeTree,
+    't-tab': Tab,
+    't-tabs': Tabs
   },
   data: function () {
     return {
       jsonValid: true,
-      modal: undefined
+      modal: undefined,
+      tabIndex: 0
     }
   },
   mounted() {
-    this.modal = new Modal('#c-modal', {
+    this.modal = new window.bootstrap.Modal('#c-modal', {
       keyboard: true
     })
   },
