@@ -1,6 +1,6 @@
-# proformajs-vue3-perform-standalone-example
+# proformajs-vue3-perform-standalone-electron-example
 
-An example usage of proformajs-vue3-perform
+An example usage of proformajs-vue3-perform using [Electron](https://www.electronjs.org/)
 
 This repo uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces)
 to create two npm libraries:
