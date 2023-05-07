@@ -20,10 +20,6 @@ The original component work for this project can be found at https://github.com/
 You'll need to run ``npx vite build --watch`` in the package that your working
 in order to see your changes reflected in the demo as you make them.
 
-### Testing
-
-Cypress e2e tests can be run in development with ``npm run test:e2e:dev`` (tested with chrome).
-
 ### Committing changes
 
 Before creating a merge request or pushing your changes to main please ensure
@@ -55,82 +51,21 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
 ```sh
 npm run build
 ```
 
-### Run Headed Component Tests with [Cypress Component Testing](https://on.cypress.io/component)
-
-```sh
-npm run test:unit:dev # or `npm run test:unit` for headless testing
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
-# Standalone Apllication
-
-## Dev
-
-### Create standalone application using [Electron](https://www.electronjs.org/)
-
-1. install Electron
-
-```sh
-npm install --save-dev electron
-```
-
-2. Add the following command in package.json
-
-```json
-{
-  "scripts": {
-    "start": "electron ."
-  }
-}
-```
-
-3. Run the command
+## Debug standalone application using [Electron](https://www.electronjs.org/)
 
 ```sh
 npm start
 ```
 
-## Package and distribution
-
-### Electron Forge
+## Package and distribution using [Electron Forge](https://www.electronforge.io/)
 
 1. Add [Electron Forge](https://www.electronforge.io/)
 
 ```sh
-npm install --save-dev @electron-forge/cli
 npx electron-forge import
 ```
 
