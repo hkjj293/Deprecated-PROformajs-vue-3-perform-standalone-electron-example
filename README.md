@@ -1,7 +1,6 @@
-# proformajs-vue3
-[![pipeline status](https://gitlab.com/openclinical/proformajs-vue3/badges/main/pipeline.svg)](https://gitlab.com/openclinical/proformajs-vue3/-/commits/main)
+# proformajs-vue3-perform-standalone-example
 
-The evolution of proformajs-vue from vue2 -> vue3
+An example usage of proformajs-vue3-perform
 
 This repo uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces)
 to create two npm libraries:
@@ -96,11 +95,39 @@ npm run test:e2e
 npm run lint
 ```
 
+# Standalone Apllication
+
+## Dev
+
+### Create standalone application using [Electron](https://www.electronjs.org/)
+
+1. install Electron
+
+```sh
+npm install --save-dev electron
+```
+
+2. Add the following command in package.json
+
+```json
+{
+  "scripts": {
+    "start": "electron ."
+  }
+}
+```
+
+3. Run the command
+
+```sh
+npm start
+```
+
 ## Package and distribution
 
 ### Electron Forge
 
-1. Add Electron Forge
+1. Add [Electron Forge](https://www.electronforge.io/)
 
 ```sh
 npm install --save-dev @electron-forge/cli
