@@ -35,7 +35,7 @@ Workspaces were then created with ``npm init -w .packages/map`` etc.
 
 ---
 
-This template should help get you started developing with Vue 3 in Vite.
+This template should help get you started building standalone PROFormaJS-Vue project.
 
 ## Recommended IDE Setup
 
