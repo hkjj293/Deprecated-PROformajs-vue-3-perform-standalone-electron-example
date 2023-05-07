@@ -7,13 +7,14 @@ import vue from '@vitejs/plugin-vue'
 const vueDocsPlugin = {
   name: 'vue-docs',
   transform(_code, id) {
-    if(!/vue&type=docs/.test(id)) return
+    if (!/vue&type=docs/.test(id)) return
     return `export default ''`
   }
 }
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '',
   esbuild: {
     keepNames: true,
     minifyIdentifiers: false
@@ -31,7 +32,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '~bootstrap': resolve(__dirname , 'node_modules/bootstrap')
+      '~bootstrap': resolve(__dirname, 'node_modules/bootstrap')
     }
   }
 })

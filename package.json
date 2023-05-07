@@ -1,8 +1,12 @@
 {
-  "name": "proformajs-vue3",
+  "name": "proformajs-vue3-perform-standalone",
   "version": "0.0.0",
+  "description": "Proformajs perform package standalone use case",
+  "main": "index.js",
   "private": true,
   "scripts": {
+    "start-dev": "electron .",
+    "start": "electron-forge start",
     "dev": "vite dev",
     "build": "npm run build --workspaces && vite build",
     "preview": "vite preview",
@@ -11,7 +15,9 @@
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
     "lint": "npm run lint --workspaces && eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "npm run format --workspaces && prettier --write src/"
+    "format": "npm run format --workspaces && prettier --write src/",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -19,13 +25,20 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@openclinical/proformajs": "^0.9.0",
     "bootstrap": "^5.2.3",
+    "electron-squirrel-startup": "^1.0.0",
     "vue": "^3.2.47"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
     "@rushstack/eslint-patch": "^1.2.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",
     "cypress": "^12.7.0",
+    "electron": "^24.2.0",
     "eslint": "^8.34.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-vue": "^9.9.0",
@@ -37,7 +50,8 @@
   "workspaces": [
     "packages/tools",
     "packages/map",
-    "packages/perform",
-    "packages/compose"
-  ]
+    "packages/perform"
+  ],
+  "author": "Matt South",
+  "license": "GPT-3"
 }

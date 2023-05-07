@@ -2,7 +2,6 @@
 import { Tab, Tabs } from '@openclinical/proformajs-vue3-tools'
 import { Protocol } from '@openclinical/proformajs'
 import { PerformProtocol } from '@openclinical/proformajs-vue3-perform'
-import { ComposeProtocol } from '@openclinical/proformajs-vue3-compose'
 
 const template = {
   class: 'Plan',
@@ -54,7 +53,7 @@ function checkMeta(protocol) {
 export default {
   components: {
     'p-protocol': PerformProtocol,
-    'c-protocol': ComposeProtocol,
+    //'c-protocol': ComposeProtocol,
     't-tab': Tab,
     't-tabs': Tabs
   },
@@ -156,14 +155,10 @@ export default {
       </nav>
       <div class="container-fluid">
         <t-tabs v-model="tabIndex" id="main-tabs">
-          <t-tab title="Compose" id="main-compose">
-            <c-protocol :protocol="protocol" :selectedtask="selectedtask" @change-protocol="updateProtocol"
-              @select-task="updateSelectedTask" />
-          </t-tab>
           <t-tab title="Perform" :disabled="!protocol || !protocol.isValid()" id="main-perform">
             <p-protocol :protocol="protocol" :debug="true" :initialData="startData" :template="protocol && protocol.meta && protocol.meta.enact && protocol.meta.enact.template
-                ? protocol.meta.enact.template
-                : 'compact'
+              ? protocol.meta.enact.template
+              : 'compact'
               " />
           </t-tab>
         </t-tabs>

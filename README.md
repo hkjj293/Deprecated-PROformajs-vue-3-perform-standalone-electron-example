@@ -95,3 +95,20 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+## Package and distribution
+
+### Electron Forge
+
+1. Add Electron Forge
+
+```sh
+npm install --save-dev @electron-forge/cli
+npx electron-forge import
+```
+
+2. Create distrubtion using make command
+
+```sh
+npm run make
+```
