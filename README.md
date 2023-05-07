@@ -60,14 +60,16 @@ npm start
 
 ## Package and distribution using [Electron Forge](https://www.electronforge.io/)
 
-1. Add [Electron Forge](https://www.electronforge.io/)
+1. Add [Electron Forge](https://www.electronforge.io/).
 
 ```sh
 npx electron-forge import
 ```
 
-2. Create distrubtion using make command
+2. Create distrubtion using make command.
 
 ```sh
 npm run make
 ```
+
+3. The executables should be output to ``out`` folder under the root folder of the project.
