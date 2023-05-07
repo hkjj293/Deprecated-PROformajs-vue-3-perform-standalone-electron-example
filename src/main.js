@@ -18,3 +18,4 @@ createApp(App)
   })
   .use(ProformajsVuePerform)
   .mount('#app')
+
