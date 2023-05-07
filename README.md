@@ -13,7 +13,7 @@ This repo uses CI to:
 * check for dependency vulnerabilities
 * run behavioural tests automatically
 
-The original component work for this project can be found at https://github.com/hkjj293/PROformajs-vue-3
+The original component work for this project can be found at https://gitlab.com/openclinical/proformajs-vue3
 
 ## Development
 
