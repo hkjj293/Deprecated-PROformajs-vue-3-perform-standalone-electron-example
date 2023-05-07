@@ -1,5 +1,5 @@
 {
-  "name": "proformajs-vue3-perform-standalone",
+  "name": "proformajs-vue3-perform-standalone-electron",
   "version": "0.0.0",
   "description": "Proformajs perform package standalone use case",
   "main": "index.js",
