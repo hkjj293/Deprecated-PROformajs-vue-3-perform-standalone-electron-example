@@ -35,7 +35,7 @@ Workspaces were then created with ``npm init -w .packages/map`` etc.
 
 ---
 
-This template should help get you started building standalone PROFormaJS-Vue project.
+This template should help get you started building standalone PRO<i>formajs</i>-Vue3 project.
 
 ## Recommended IDE Setup
 
